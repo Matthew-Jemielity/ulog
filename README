@@ -8,7 +8,7 @@ void log_to_stderr(
     va_list args
 )
 {
-    vprintf( stderr, format, args );
+    vfprintf( stderr, format, args );
     fflush( stderr );
 }
 

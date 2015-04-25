@@ -211,7 +211,10 @@ handler_callback( void * const pointer, void * const userdata )
     pointer_list_element const * const element = pointer;
     callback_userdata * data = userdata;
 
-    element->handler( data->level, data->format, data->args );
+    va_list args;
+    va_copy( args, data->args );
+    element->handler( data->level, data->format, args );
+    va_end( args );
     return ulog_status_from_int( 0 );
 }
 
@@ -224,15 +227,12 @@ ulog( ulog_level const level, char const * const format, ... )
         return;
     }
 
-    va_list args;
-    va_start( args, format );
-
     callback_userdata data =
     {
         .level = level,
         .format = format,
     };
-    memcpy( &( data.args ), &args, sizeof( va_list ));
+    va_start( data.args, format );
 
     ulog_status result =
         log.state->guard.mutex.lock( log.state->guard.mutex );
@@ -250,7 +250,7 @@ ulog( ulog_level const level, char const * const format, ... )
         UNUSED( log.state->guard.mutex.unlock( log.state->guard.mutex ));
     }
 
-    va_end( args );
+    va_end( data.args );
 }
 
 THREADUNSAFE ulog_ctrl ulog_setup( void )
