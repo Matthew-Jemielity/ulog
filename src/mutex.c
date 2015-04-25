@@ -8,7 +8,8 @@
  *
  **/
 
-#include <errno.h>
+#include <errno.h> /* EINVAL, EIO, ENOMEM */
+#include <stddef.h> /* NULL */
 #include <stdlib.h>
 #if __STDC_NO_THREADS__
 # include <pthread.h>

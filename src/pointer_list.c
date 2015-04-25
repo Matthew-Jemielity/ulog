@@ -8,7 +8,8 @@
  *
  **/
 
-#include <errno.h>
+#include <errno.h> /* EINVAL, EEXIST, ENOMEM, ENODATA, ENOEXEC */
+#include <stddef.h> /* NULL */
 #include <stdlib.h>
 #include <ulog/pointer_list.h>
 #include <ulog/status.h> /* ulog_status */
