@@ -1,3 +1,15 @@
+commit 3a8d01f84b43ba7aac4cb0b92b5b2bbd3ea00316
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sat Apr 25 08:27:44 2015 -0700
+
+    bugfix: va_list is now copied before each use; added simple test
+
+commit f50bad207936f2a8a32f749e45518f028daba13e
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sat Apr 25 07:23:05 2015 -0700
+
+    autoconf setup
+
 commit ac7f3739792f392c739fc4feb62d64c4550cdc2f
 Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
 Date:   Sat Apr 25 05:50:45 2015 -0700
