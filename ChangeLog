@@ -1,3 +1,33 @@
+commit 78b1ea8d37f465ea05dfaf6ebbb736977004fb9f
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Tue Apr 28 15:50:21 2015 -0700
+
+    added -Wall -Wextra -pedantic flags to compilation
+
+commit e22ab17bd292f617a39ab22587ad68171bf9877a
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Tue Apr 28 15:49:55 2015 -0700
+
+    getter for global ulog_obj var for better control
+
+commit c2c9404822ae23981783f3d29d278837b95f8788
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Tue Apr 28 08:23:57 2015 -0700
+
+    fixes for doxygen comments, doxygen configuration added
+
+commit c6b2a86f362c97777b3862a299e1efb37aa9e939
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Tue Apr 28 07:24:17 2015 -0700
+
+    bugfix: frees in error path; removed thread-locality of globals; small comment fixes
+
+commit d28750281c2311f99c59029d98c03724e80411f0
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sat Apr 25 08:30:38 2015 -0700
+
+    updated changelog
+
 commit 3a8d01f84b43ba7aac4cb0b92b5b2bbd3ea00316
 Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
 Date:   Sat Apr 25 08:27:44 2015 -0700
