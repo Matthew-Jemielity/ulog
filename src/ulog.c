@@ -184,7 +184,7 @@ remove( ulog_obj const self, ulog_log_handler const handler )
     return result;
 }
 
-static ulog_obj * get_global_ulog_obj( void )
+static ulog_obj const * get_global_ulog_obj( void )
 {
     static ulog_obj_state state =
     {
