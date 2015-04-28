@@ -111,6 +111,10 @@ add( ulog_obj const self, ulog_log_handler const handler )
             self.state->handlers.add( &( self.state->handlers ), element );
     }
     UNUSED( self.state->guard.mutex.unlock( self.state->guard.mutex ));
+    if( 0 != ulog_status_to_int( result ))
+    {
+        free( element );
+    }
     return result;
 }
 
@@ -135,11 +139,6 @@ removal_callback( void * const pointer, void * const userdata )
     if( element->handler == data->handler )
     {
         data->pointer = pointer;
-        free( pointer );
-        /*
-         * note that data->pointer now is a hanging pointer
-         * we have to be careful when using it
-         */
     }
     return ulog_status_from_int( 0 );
 }
@@ -176,22 +175,28 @@ remove( ulog_obj const self, ulog_log_handler const handler )
             &( self.state->handlers ),
             data.pointer
         );
+        if( 0 == ulog_status_to_int( result ))
+        {
+            free( data.pointer );
+        }
     }
     UNUSED( self.state->guard.mutex.unlock( self.state->guard.mutex ));
     return result;
 }
 
-static THREADLOCAL ulog_obj_state state =
+/****************** START OF GLOBAL VARIABLES *******************/
+static ulog_obj_state state =
 {
     .initialized = false
 };
 
-static THREADLOCAL ulog_obj log =
+static ulog_obj log =
 {
     .state = &state,
     .add = add,
     .remove = remove
 };
+/******************* END OF GLOBAL VARIABLES ********************/
 
 typedef struct
 {

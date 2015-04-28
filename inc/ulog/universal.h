@@ -25,17 +25,6 @@
 # define INDIRECT
 
 /**
- * \brief Specifies that a local copy of variable should be created per-thread.
- *
- * This macro provides a wrapper for optional C11 thread_local functionality.
- */
-# if __STDC_NO_THREADS__
-#  define THREADLOCAL
-# else /* !__STDC_NO_THREADS__ */
-#  define THREADLOCAL thread_local
-# endif /* __STDC_NO_THREADS__ */
-
-/**
  * \brief Specifies that a method is not thread-safe.
  *
  * Currently a no-op. Signifies that method wasn't designed to be thread-safe

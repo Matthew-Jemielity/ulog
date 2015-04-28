@@ -47,7 +47,7 @@ INDIRECT uint64_t ulog_current_time( void );
  * \param ... Arguments to output, according to format, as in printf.
  * \see ulog_level
  *
- * This method operates on static values. It's thread safe.
+ * This method operates on static values. It's thread-safe.
  */
 INDIRECT void
 ulog( ulog_level const level, char const * const format, ... );
@@ -132,6 +132,7 @@ typedef void ( * ulog_log_handler )(
  * 3. removing handler:
  * a) codes returned by ulog_mutex  locking and unlocking methods;
  * b) codes returned by ulog_pointer_list remove method.
+ * The methods implementing this typedef are thread-safe.
  */
 typedef ulog_status ( * ulog_control_func )(
     ulog_obj const self,
@@ -171,7 +172,7 @@ ulog_ctrl;
  * on static objects, which allows for easy, hassle free usage of logging
  * macros. By default, no handlers are registered (therefore logging would
  * do nothing). This method is NOT thread-safe as it has to use static
- * variable. If EALREADY is returned as status, the returned log pointer will
+ * variables. If EALREADY is returned as status, the returned log pointer will
  * point to initialized structure that can be used normally.
  * Possible status codes:
  * 1. EALREADY - logging framework already initialized;
@@ -188,7 +189,7 @@ THREADUNSAFE ulog_ctrl ulog_setup( void );
  * \see ulog_pointer_list_cleanup
  *
  * This method frees internal structures used by logging framework. It operates
- * on static values. It's NOT thread-safe as it has to use static variable.
+ * on static values. It's NOT thread-safe as it has to use static variables.
  * Possible status codes:
  * 1. EALREADY - logging framework already uninitialized;
  * 2. any error codes returned by ulog_mutex lock and unlock methods;
