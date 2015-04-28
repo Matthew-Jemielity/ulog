@@ -40,9 +40,12 @@ typedef struct ulog_mutex_state_struct ulog_mutex_state;
  */
 struct ulog_mutex_struct
 {
-    ulog_mutex_state * state; /** Object's state */
-    ulog_mutex_func lock; /** Mutex locking method. */
-    ulog_mutex_func unlock; /** Mutex unlocking method. */
+    /** Object's state */
+    ulog_mutex_state * state;
+    /** Mutex locking method. */
+    ulog_mutex_func lock;
+    /** Mutex unlocking method. */
+    ulog_mutex_func unlock;
 };
 
 /**
@@ -52,8 +55,10 @@ struct ulog_mutex_struct
  */
 typedef struct
 {
-    ulog_status status; /** Zero on success, else error code. */
-    ulog_mutex mutex; /** Mutex object. */
+    /** Zero on success, else error code. */
+    ulog_status status;
+    /** Mutex object. */
+    ulog_mutex mutex;
 }
 ulog_mutex_ctrl;
 

@@ -23,8 +23,10 @@ typedef struct ulog_pointer_list_element_struct ulog_pointer_list_element;
  */
 struct ulog_pointer_list_element_struct
 {
-    void * pointer; /** Pointer held in the list. */
-    ulog_pointer_list_element * next; /** Pointer to next list element. */
+    /** Pointer held in the list. */
+    void * pointer;
+    /** Pointer to next list element. */
+    ulog_pointer_list_element * next;
 };
 
 /*
@@ -102,10 +104,14 @@ typedef ulog_status ( * ulog_pointer_list_foreach_func )(
  */
 struct ulog_pointer_list_struct
 {
-    ulog_pointer_list_element * head; /** Pointer to first list element */
-    ulog_pointer_list_func add; /** Adds pointer to the list. */
-    ulog_pointer_list_func remove; /** Removes existing pointer. */
-    ulog_pointer_list_foreach_func foreach; /** Iterator. */
+    /** Pointer to first list element */
+    ulog_pointer_list_element * head;
+    /** Adds pointer to the list. */
+    ulog_pointer_list_func add;
+    /** Removes existing pointer. */
+    ulog_pointer_list_func remove;
+    /** Iterator. */
+    ulog_pointer_list_foreach_func foreach;
 };
 
 /**

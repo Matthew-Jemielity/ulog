@@ -24,10 +24,14 @@
  */
 typedef enum
 {
-    ERROR, /** Unrecoverable errors */
-    WARNING, /** Problems where recovery is possible */
-    INFO, /** Messages that should be logged during normal operation */
-    DEBUG /** Debug-only messages */
+    /** Unrecoverable errors */
+    ERROR,
+    /** Problems where recovery is possible */
+    WARNING,
+    /** Messages that should be logged during normal operation */
+    INFO,
+    /** Debug-only messages */
+    DEBUG
 }
 ulog_level;
 
@@ -146,9 +150,12 @@ typedef struct ulog_obj_state_struct ulog_obj_state;
  */
 struct ulog_obj_struct
 {
-    ulog_obj_state * state; /** Log object state. */
-    ulog_control_func add; /** Adds handler to log object. */
-    ulog_control_func remove; /** Removes handler from log object. */
+    /** Log object state. */
+    ulog_obj_state * state;
+    /** Adds handler to log object. */
+    ulog_control_func add;
+    /** Removes handler from log object. */
+    ulog_control_func remove;
 };
 
 /**
@@ -156,8 +163,10 @@ struct ulog_obj_struct
  */
 typedef struct
 {
-    ulog_status status; /** Zero on sucess, else error code. */
-    ulog_obj log; /** Log object. */
+    /** Zero on sucess, else error code. */
+    ulog_status status;
+    /** Log object. */
+    ulog_obj log;
 }
 ulog_ctrl;
 

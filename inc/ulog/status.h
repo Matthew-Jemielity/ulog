@@ -19,7 +19,8 @@
  */
 typedef struct
 {
-    int code; /** Status code compatible with errno. */
+    /** Status code compatible with errno. */
+    int code;
 }
 ulog_status;
 
