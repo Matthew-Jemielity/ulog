@@ -1,4 +1,4 @@
-AM_CFLAGS = -I$(top_srcdir)/inc
+AM_CFLAGS = -Wall -Wextra -pedantic -I$(top_srcdir)/inc
 
 lib_LTLIBRARIES = libulog.la
 libulog_la_SOURCES = \
