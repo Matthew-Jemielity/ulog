@@ -184,19 +184,22 @@ remove( ulog_obj const self, ulog_log_handler const handler )
     return result;
 }
 
-/****************** START OF GLOBAL VARIABLES *******************/
-static ulog_obj_state state =
+static ulog_obj * get_global_ulog_obj( void )
 {
-    .initialized = false
-};
+    static ulog_obj_state state =
+    {
+        .initialized = false
+    };
 
-static ulog_obj log =
-{
-    .state = &state,
-    .add = add,
-    .remove = remove
-};
-/******************* END OF GLOBAL VARIABLES ********************/
+    static ulog_obj ulog =
+    {
+        .state = &state,
+        .add = add,
+        .remove = remove
+    };
+
+    return &ulog;
+}
 
 typedef struct
 {
@@ -227,7 +230,7 @@ handler_callback( void * const pointer, void * const userdata )
 INDIRECT void
 ulog( ulog_level const level, char const * const format, ... )
 {
-    if( false == log.state->initialized )
+    if( false == get_global_ulog_obj()->state->initialized )
     {
         return;
     }
@@ -240,11 +243,13 @@ ulog( ulog_level const level, char const * const format, ... )
     va_start( data.args, format );
 
     ulog_status result =
-        log.state->guard.mutex.lock( log.state->guard.mutex );
+        get_global_ulog_obj()->state->guard.mutex.lock(
+            get_global_ulog_obj()->state->guard.mutex
+        );
     if( 0 == ulog_status_to_int( result ))
     {
-        result = log.state->handlers.foreach(
-            &( log.state->handlers ),
+        result = get_global_ulog_obj()->state->handlers.foreach(
+            &( get_global_ulog_obj()->state->handlers ),
             handler_callback,
             &data
         );
@@ -252,7 +257,9 @@ ulog( ulog_level const level, char const * const format, ... )
             ( 0 == ulog_status_to_int( result ))
             || ( ENODATA == ulog_status_to_int( result ))
         );
-        UNUSED( log.state->guard.mutex.unlock( log.state->guard.mutex ));
+        UNUSED( get_global_ulog_obj()->state->guard.mutex.unlock(
+            get_global_ulog_obj()->state->guard.mutex
+        ));
     }
 
     va_end( data.args );
@@ -260,13 +267,12 @@ ulog( ulog_level const level, char const * const format, ... )
 
 THREADUNSAFE ulog_ctrl ulog_setup( void )
 {
-    /* log is global variable */
-    if( true == log.state->initialized )
+    if( true == get_global_ulog_obj()->state->initialized )
     {
         return ( ulog_ctrl )
         {
             .status = ulog_status_from_int( EALREADY ),
-            .log = log
+            .log = *( get_global_ulog_obj() )
         };
     }
 
@@ -281,8 +287,7 @@ THREADUNSAFE ulog_ctrl ulog_setup( void )
     }
     ulog_pointer_list const handlers = ulog_pointer_list_setup();
 
-    /* state is a global variable */
-    state = ( ulog_obj_state )
+    *( get_global_ulog_obj()->state ) = ( ulog_obj_state )
     {
         .initialized = true,
         .handlers = handlers,
@@ -291,7 +296,7 @@ THREADUNSAFE ulog_ctrl ulog_setup( void )
     return ( ulog_ctrl )
     {
         .status = ulog_status_from_int( 0 ),
-        .log = log
+        .log = *( get_global_ulog_obj() )
     };
 }
 
