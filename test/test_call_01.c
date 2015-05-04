@@ -34,10 +34,7 @@ int main( int argc, char * args[] )
     ( void ) args;
 
     ulog_ctrl ctrl = ulog_setup();
-    if( 0 != ulog_status_to_int( ctrl.status ))
-    {
-        return ulog_status_to_int( ctrl.status );
-    }
+    assert( 0 == ulog_status_to_int( ctrl.status ));
     assert( 0 == ulog_status_to_int( ctrl.log.add( ctrl.log, dummy_log )));
 
     assert( 0 == check );

@@ -20,10 +20,7 @@ int main( int argc, char * args[] )
     ( void ) args;
 
     ulog_ctrl ctrl = ulog_setup();
-    if( 0 != ulog_status_to_int( ctrl.status ))
-    {
-        return ulog_status_to_int( ctrl.status );
-    }
+    assert( 0 == ulog_status_to_int( ctrl.status ));
 
     UERROR( "this shouldn't be printed" );
 

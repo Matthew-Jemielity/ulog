@@ -65,10 +65,7 @@ int main( int argc, char * args[] )
 
     {
         ulog_ctrl ctrl = ulog_setup();
-        if( 0 != ulog_status_to_int( ctrl.status ))
-        {
-            return ulog_status_to_int( ctrl.status );
-        }
+        assert( 0 == ulog_status_to_int( ctrl.status ));
         assert( 0 == ulog_status_to_int( ctrl.log.add( ctrl.log, error_log )));
         UERROR( "" );
         assert( 0 == ulog_status_to_int( ulog_cleanup( ctrl )));
@@ -76,10 +73,7 @@ int main( int argc, char * args[] )
 
     {
         ulog_ctrl ctrl = ulog_setup();
-        if( 0 != ulog_status_to_int( ctrl.status ))
-        {
-            return ulog_status_to_int( ctrl.status );
-        }
+        assert( 0 == ulog_status_to_int( ctrl.status ));
         assert( 0 == ulog_status_to_int( ctrl.log.add( ctrl.log, warning_log )));
         UWARNING( "" );
         assert( 0 == ulog_status_to_int( ulog_cleanup( ctrl )));
@@ -87,10 +81,7 @@ int main( int argc, char * args[] )
 
     {
         ulog_ctrl ctrl = ulog_setup();
-        if( 0 != ulog_status_to_int( ctrl.status ))
-        {
-            return ulog_status_to_int( ctrl.status );
-        }
+        assert( 0 == ulog_status_to_int( ctrl.status ));
         assert( 0 == ulog_status_to_int( ctrl.log.add( ctrl.log, info_log )));
         UINFO( "" );
         assert( 0 == ulog_status_to_int( ulog_cleanup( ctrl )));
@@ -98,10 +89,7 @@ int main( int argc, char * args[] )
 
     {
         ulog_ctrl ctrl = ulog_setup();
-        if( 0 != ulog_status_to_int( ctrl.status ))
-        {
-            return ulog_status_to_int( ctrl.status );
-        }
+        assert( 0 == ulog_status_to_int( ctrl.status ));
         assert( 0 == ulog_status_to_int( ctrl.log.add( ctrl.log, debug_log )));
         UDEBUG( "" );
         assert( 0 == ulog_status_to_int( ulog_cleanup( ctrl )));
