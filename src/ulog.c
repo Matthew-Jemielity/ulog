@@ -45,7 +45,8 @@ from_timespec( struct timespec const value )
         + ( ( uint64_t ) value.tv_nsec );
 }
 
-INDIRECT uint64_t ulog_current_time( void )
+INDIRECT uint64_t
+ulog_current_time( void )
 {
     struct timespec result;
 
@@ -184,7 +185,8 @@ remove( ulog_obj const self, ulog_log_handler const handler )
     return result;
 }
 
-static ulog_obj const * get_global_ulog_obj( void )
+static ulog_obj const *
+get_global_ulog_obj( void )
 {
     static ulog_obj_state state =
     {
@@ -265,7 +267,8 @@ ulog( ulog_level const level, char const * const format, ... )
     va_end( data.args );
 }
 
-THREADUNSAFE ulog_ctrl ulog_setup( void )
+THREADUNSAFE ulog_ctrl
+ulog_setup( void )
 {
     if( true == get_global_ulog_obj()->state->initialized )
     {
@@ -308,7 +311,8 @@ free_callback( void * const pointer, void * const userdata )
     return ulog_status_from_int( 0 );
 }
 
-THREADUNSAFE ulog_status ulog_cleanup( ulog_ctrl const ctrl )
+THREADUNSAFE ulog_status
+ulog_cleanup( ulog_ctrl const ctrl )
 {
     if(
         ( 0 != ulog_status_to_int( ctrl.status ))

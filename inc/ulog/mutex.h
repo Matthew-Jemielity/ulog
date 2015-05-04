@@ -72,7 +72,8 @@ ulog_mutex_ctrl;
  * 2. EIO - mutex initialization failed.
  * Mutex inside the control object is usable only if returned status is zero.
  */
-ulog_mutex_ctrl ulog_mutex_setup( void );
+ulog_mutex_ctrl
+ulog_mutex_setup( void );
 
 /**
  * \brief Safely destroys a ulog_mutex object.
@@ -86,7 +87,8 @@ ulog_mutex_ctrl ulog_mutex_setup( void );
  * After cleanup finishes successfully, using the mutex in control object
  * is undefined.
  */
-ulog_status ulog_mutex_cleanup( ulog_mutex_ctrl const ctrl );
+ulog_status
+ulog_mutex_cleanup( ulog_mutex_ctrl const ctrl );
 
 #endif /* ULOG_MUTEX_H__ */
 

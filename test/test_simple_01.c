@@ -14,7 +14,8 @@
 #include <ulog/status.h>
 #include <ulog/ulog.h>
 
-void log_to_stderr(
+void
+log_to_stderr(
     ulog_level const level,
     char const * const format,
     va_list args
@@ -25,7 +26,8 @@ void log_to_stderr(
     ( void ) fflush( stderr );
 }
 
-void log_to_stdout(
+void
+log_to_stdout(
     ulog_level const level,
     char const * const format,
     va_list args
@@ -36,7 +38,8 @@ void log_to_stdout(
     ( void ) fflush( stdout );
 }
 
-int main( int argc, char * args[] )
+int
+main( int argc, char * args[] )
 {
     ( void ) argc;
     ( void ) args;

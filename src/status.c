@@ -10,12 +10,14 @@
 
 #include <ulog/status.h>
 
-ulog_status ulog_status_from_int( int const code )
+ulog_status
+ulog_status_from_int( int const code )
 {
     return ( ulog_status ) { code };
 }
 
-int ulog_status_to_int( ulog_status const status )
+int
+ulog_status_to_int( ulog_status const status )
 {
     return status.code;
 }

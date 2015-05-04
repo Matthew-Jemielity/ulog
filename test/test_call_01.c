@@ -16,7 +16,8 @@
 
 int check = 0;
 
-void dummy_log(
+void
+dummy_log(
     ulog_level const level,
     char const * const format,
     va_list args
@@ -28,7 +29,8 @@ void dummy_log(
     check = 1;
 }
 
-int main( int argc, char * args[] )
+int
+main( int argc, char * args[] )
 {
     ( void ) argc;
     ( void ) args;

@@ -1,6 +1,6 @@
 /**
  * \author      Mateusz Jemielity matthew.jemielity@gmail.com
- * \brief       C version-specific mplementation of simple mutex wrapper.
+ * \brief       C version-specific implementation of simple mutex wrapper.
  * \date        2015/04/24 17:16:23 AM
  * \file        mutex.c
  * \version     1.0
@@ -32,7 +32,9 @@ struct ulog_mutex_state_struct
     mutex_obj mutex;
 };
 
-typedef int ( * internal_mutex_op )( mutex_obj * mutex );
+typedef int
+( * internal_mutex_op )( mutex_obj * mutex );
+
 static internal_mutex_op const lock_operation =
 #if __STDC_NO_THREADS__
     pthread_mutex_lock
@@ -69,17 +71,20 @@ operation( ulog_mutex const self, internal_mutex_op const internal_operation )
     }
 }
 
-static ulog_status lock( ulog_mutex const self )
+static ulog_status
+lock( ulog_mutex const self )
 {
     return operation( self, lock_operation );
 }
 
-static ulog_status unlock( ulog_mutex const self )
+static ulog_status
+unlock( ulog_mutex const self )
 {
     return operation( self, unlock_operation );
 }
 
-ulog_mutex_ctrl ulog_mutex_setup( void )
+ulog_mutex_ctrl
+ulog_mutex_setup( void )
 {
     ulog_mutex_state * const state = malloc( sizeof( ulog_mutex_state ));
     ulog_mutex self =
@@ -125,7 +130,8 @@ ulog_mutex_ctrl ulog_mutex_setup( void )
     }
 }
 
-ulog_status ulog_mutex_cleanup( ulog_mutex_ctrl const ctrl )
+ulog_status
+ulog_mutex_cleanup( ulog_mutex_ctrl const ctrl )
 {
     if( 0 != ulog_status_to_int( ctrl.status ))
     {

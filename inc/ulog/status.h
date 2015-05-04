@@ -33,7 +33,8 @@ ulog_status;
  * use this method for translation instead of direct use of ulog_status
  * internal structure.
  */
-ulog_status ulog_status_from_int( int const code );
+ulog_status
+ulog_status_from_int( int const code );
 
 /**
  * \brief Translates ulog_status to int for easy manipulation and comparison.
@@ -44,7 +45,8 @@ ulog_status ulog_status_from_int( int const code );
  * use this method for translation instead of direct use of ulog_status
  * internal structure.
  */
-int ulog_status_to_int( ulog_status const status );
+int
+ulog_status_to_int( ulog_status const status );
 
 #endif /* ULOG_STATUS_H__ */
 

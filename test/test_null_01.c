@@ -14,7 +14,8 @@
 #include <ulog/status.h>
 #include <ulog/ulog.h>
 
-int main( int argc, char * args[] )
+int
+main( int argc, char * args[] )
 {
     ( void ) argc;
     ( void ) args;

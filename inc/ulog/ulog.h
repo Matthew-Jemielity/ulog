@@ -42,7 +42,8 @@ ulog_level;
  * The time reported here is equal to the wall clock time, thus it's affected
  * by jumps resulting from changing the wall clock time.
  */
-INDIRECT uint64_t ulog_current_time( void );
+INDIRECT uint64_t
+ulog_current_time( void );
 
 /**
  * \brief Directs output of a log message to registered handlers.
@@ -109,7 +110,8 @@ typedef struct ulog_obj_struct ulog_obj;
  * \param args Arguments for the format string, as in vprintf.
  * \warning Handler implementations must be thread-safe.
  */
-typedef void ( * ulog_log_handler )(
+typedef void
+( * ulog_log_handler )(
     ulog_level const level,
     char const * const format,
     va_list args
@@ -138,7 +140,8 @@ typedef void ( * ulog_log_handler )(
  * b) codes returned by ulog_pointer_list remove method.
  * The methods implementing this typedef are thread-safe.
  */
-typedef ulog_status ( * ulog_control_func )(
+typedef ulog_status
+( * ulog_control_func )(
     ulog_obj const self,
     ulog_log_handler const handler
 );
@@ -187,7 +190,8 @@ ulog_ctrl;
  * 1. EALREADY - logging framework already initialized;
  * 2. any error code returned by ulog_mutex_setup.
  */
-THREADUNSAFE ulog_ctrl ulog_setup( void );
+THREADUNSAFE ulog_ctrl
+ulog_setup( void );
 
 /**
  * \brief Deinitializes and frees resources used by the logging framework.
@@ -207,7 +211,8 @@ THREADUNSAFE ulog_ctrl ulog_setup( void );
  * After the cleanup method returns successfuly, using the log object is
  * undefined.
  */
-THREADUNSAFE ulog_status ulog_cleanup( ulog_ctrl const ctrl );
+THREADUNSAFE ulog_status
+ulog_cleanup( ulog_ctrl const ctrl );
 
 #endif /* ULOG_H__ */
 

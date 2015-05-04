@@ -71,7 +71,8 @@ remove( ulog_pointer_list * const self, void * const pointer )
     return ulog_status_from_int( ENODATA );
 }
 
-static ulog_status foreach(
+static ulog_status
+foreach(
     ulog_pointer_list const * const self,
     ulog_pointer_list_foreach_callback const callback,
     void * const userdata
@@ -102,7 +103,8 @@ static ulog_status foreach(
     return result;
 }
 
-ulog_pointer_list ulog_pointer_list_setup( void )
+ulog_pointer_list
+ulog_pointer_list_setup( void )
 {
     return ( ulog_pointer_list )
     {
@@ -117,7 +119,8 @@ ulog_pointer_list ulog_pointer_list_setup( void )
  * removal of element known to be on the list will not fail
  * therefore we'll simplify the implementation to use that info
  */
-ulog_status ulog_pointer_list_cleanup( ulog_pointer_list * const list )
+ulog_status
+ulog_pointer_list_cleanup( ulog_pointer_list * const list )
 {
     if( NULL == list )
     {

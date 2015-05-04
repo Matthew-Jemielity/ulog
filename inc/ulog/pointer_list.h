@@ -48,7 +48,8 @@ typedef struct ulog_pointer_list_struct ulog_pointer_list;
  * 3. When removing a pointer:
  * a) ENODATA - given pointer doesn't exist in the list.
  */
-typedef ulog_status ( * ulog_pointer_list_func )(
+typedef ulog_status
+( * ulog_pointer_list_func )(
     ulog_pointer_list * const self,
     void * const pointer
 );
@@ -65,7 +66,8 @@ typedef ulog_status ( * ulog_pointer_list_func )(
  * return 0. First returned error will stop the foreach loop and return the
  * received error.
  */
-typedef ulog_status ( * ulog_pointer_list_foreach_callback )(
+typedef ulog_status
+( * ulog_pointer_list_foreach_callback )(
     void * const pointer,
     void * const userdata
 );
@@ -87,7 +89,8 @@ typedef ulog_status ( * ulog_pointer_list_foreach_callback )(
  * 3. ENODATA - the list is empty;
  * 4. any error code returned by the callback.
  */
-typedef ulog_status ( * ulog_pointer_list_foreach_func )(
+typedef ulog_status
+( * ulog_pointer_list_foreach_func )(
     ulog_pointer_list const * const self,
     ulog_pointer_list_foreach_callback const callback,
     void * const userdata
@@ -120,7 +123,8 @@ struct ulog_pointer_list_struct
  *
  * Head is initialized to NULL. This method will not fail.
  */
-ulog_pointer_list ulog_pointer_list_setup( void );
+ulog_pointer_list
+ulog_pointer_list_setup( void );
 
 /**
  * \brief Deinitializes and frees ulog_pointer_list.
@@ -133,8 +137,8 @@ ulog_pointer_list ulog_pointer_list_setup( void );
  * 2. the same as returned by list element removal method.
  * After the method successfully returns, the list head will be NULL.
  */
-ulog_status ulog_pointer_list_cleanup( ulog_pointer_list * const list );
-
+ulog_status
+ulog_pointer_list_cleanup( ulog_pointer_list * const list );
 
 #endif /* ULOG_POINTER_LIST_H__ */
 

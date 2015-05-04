@@ -14,7 +14,8 @@
 #include <ulog/status.h>
 #include <ulog/ulog.h>
 
-void error_log(
+void
+error_log(
     ulog_level const level,
     char const * const format,
     va_list args
@@ -25,7 +26,8 @@ void error_log(
     assert( ERROR == level );
 }
 
-void warning_log(
+void
+warning_log(
     ulog_level const level,
     char const * const format,
     va_list args
@@ -36,7 +38,8 @@ void warning_log(
     assert( WARNING == level );
 }
 
-void info_log(
+void
+info_log(
     ulog_level const level,
     char const * const format,
     va_list args
@@ -47,7 +50,8 @@ void info_log(
     assert( INFO == level );
 }
 
-void debug_log(
+void
+debug_log(
     ulog_level const level,
     char const * const format,
     va_list args
@@ -58,7 +62,8 @@ void debug_log(
     assert( DEBUG == level );
 }
 
-int main( int argc, char * args[] )
+int
+main( int argc, char * args[] )
 {
     ( void ) argc;
     ( void ) args;
