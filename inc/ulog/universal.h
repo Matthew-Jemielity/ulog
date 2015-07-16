@@ -11,10 +11,6 @@
 #ifndef ULOG_UNIVERSAL_H__
 # define ULOG_UNIVERSAL_H__
 
-# if !__STDC_NO_THREADS__
-#  include <threads.h> /* thread_local */
-# endif /* !__STDC_NO_THREADS__ */
-
 /**
  * \brief Specifies that a method shouldn't be used directly.
  *

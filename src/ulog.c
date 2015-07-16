@@ -22,7 +22,7 @@
 #include <ulog/mutex.h> /* ulog_mutex */
 #include <ulog/pointer_list.h> /* ulog_pointer_list */
 #include <ulog/status.h> /* ulog_status */
-#include <ulog/universal.h> /* THREADLOCAL, THREADUNSAFE, UNUSED */
+#include <ulog/universal.h> /* THREADUNSAFE, UNUSED */
 
 #define NANOSECONDS_IN_MICROSECOND 1000U
 #define MICROSECONDS_IN_MILLISECOND 1000U
