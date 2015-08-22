@@ -1,8 +1,8 @@
 /**
  * \author      Mateusz Jemielity matthew.jemielity@gmail.com
- * \brief       Checks whether proper error levels are passed.
+ * \brief       Checks whether proper log levels are passed.
  * \date        04/25/2015 07:39:13 AM
- * \file        test_error_levels_01.c
+ * \file        test_log_levels_01.c
  * \version     1.0
  *
  *

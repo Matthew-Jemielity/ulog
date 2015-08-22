@@ -163,12 +163,35 @@ typedef ulog_status
 );
 
 /**
+ * \brief Sets minimum log level below which messages will be ignored.
+ * \param self Log object on which we'll operate.
+ * \param verbosity Minimal log level.
+ * \return Zero on success, else error code.
+ *
+ * By default the minimum log level is set to DEBUG. This means all logs
+ * will reach user-supplied handlers. By setting the minimum log level to
+ * a higher value, all logs below it will be ignored and will never reach
+ * user handlers. This allows easy setting of global log verbosity.
+ * Possible error codes:
+ * 1. EINVAL - invalid ulog_obj or invalid value of log level given;
+ * 2. codes returned by ulog_mutex locking and unlocking methods.
+ */
+typedef ulog_status
+( * ulog_verbosity_func )(
+    ulog_obj const self,
+    ulog_level const verbosity
+);
+
+/**
  * \brief Opaque container for ulog object state.
  */
 typedef struct ulog_obj_state_struct ulog_obj_state;
 
 /**
  * \brief Declaration of log object.
+ * \see ulog_obj_state
+ * \see ulog_control_func
+ * \see ulog_verbosity_func
  */
 struct ulog_obj_struct
 {
@@ -178,6 +201,8 @@ struct ulog_obj_struct
     ulog_control_func add;
     /** Removes handler from log object. */
     ulog_control_func remove;
+    /** Sets minimum log verbosity. */
+    ulog_verbosity_func verbosity;
 };
 
 /**

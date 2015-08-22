@@ -31,6 +31,7 @@
 struct ulog_obj_state_struct
 {
     bool initialized;
+    ulog_level verbosity;
     ulog_pointer_list handlers;
     ulog_mutex_ctrl guard;
 };
@@ -198,6 +199,33 @@ remove( ulog_obj const self, ulog_log_handler const handler )
     return result;
 }
 
+static ulog_status
+verbosity( ulog_obj const self, ulog_level const verbosity )
+{
+    if( NULL == self.state )
+    {
+        return ulog_status_from_int( EINVAL );
+    }
+
+    switch( verbosity )
+    {
+        case ERROR: break;
+        case WARNING: break;
+        case INFO: break;
+        case DEBUG: break;
+        default: return ulog_status_from_int( EINVAL );
+    }
+
+    ulog_status result =
+        self.state->guard.mutex.lock( self.state->guard.mutex );
+    if( 0 != ulog_status_to_int( result ))
+    {
+        return result;
+    }
+    self.state->verbosity = verbosity;
+    return self.state->guard.mutex.unlock( self.state->guard.mutex );
+}
+
 static ulog_obj const *
 get_global_ulog_obj( void )
 {
@@ -210,7 +238,8 @@ get_global_ulog_obj( void )
     {
         .state = &state,
         .add = add,
-        .remove = remove
+        .remove = remove,
+        .verbosity = verbosity
     };
 
     return &ulog;
@@ -249,6 +278,10 @@ ulog( ulog_level const level, char const * const format, ... )
     {
         return;
     }
+    if( level > get_global_ulog_obj()->state->verbosity )
+    {
+        return;
+    }
 
     callback_userdata data =
     {
@@ -283,6 +316,10 @@ ulog( ulog_level const level, char const * const format, ... )
 THREADUNSAFE ulog_ctrl
 ulog_setup( void )
 {
+    assert( ERROR < WARNING );
+    assert( WARNING < INFO );
+    assert( INFO < DEBUG );
+
     if( true == get_global_ulog_obj()->state->initialized )
     {
         return ( ulog_ctrl )
@@ -306,6 +343,7 @@ ulog_setup( void )
     *( get_global_ulog_obj()->state ) = ( ulog_obj_state )
     {
         .initialized = true,
+        .verbosity = DEBUG,
         .handlers = handlers,
         .guard = guard
     };
