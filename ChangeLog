@@ -1,3 +1,81 @@
+commit 45edeaf95a0f004a1cba805c69aa96081dfbf05c
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sat Aug 22 17:17:33 2015 +0200
+
+    added global verbosity level, meesages below wont reach user handlers
+
+commit 9163518bf78aed228b1d0ce15bc5a05e0f7c136f
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sat Aug 22 16:13:58 2015 +0200
+
+    commented ulog_obj_state
+
+commit 4ea5b93fd36dee2518da9232cfd675b7b6660ae3
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sat Aug 22 16:02:01 2015 +0200
+
+    fixed comment
+
+commit cca5dc3f21239d3aa6cd73605a7838bfec221065
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sat Aug 22 15:55:25 2015 +0200
+
+    added test for ulog_level_to_char()
+
+commit a822fea4c56163e1589b5c7ace6bc00aeb4c11f2
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sat Aug 22 15:52:57 2015 +0200
+
+    removed unused main arguments - main(void) is legal
+
+commit 1cf4fb08f128bd5c25c4b9288c083bb6c0ea3dff
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sat Aug 22 15:45:27 2015 +0200
+
+    added test showing clean compilation with empty ulog call
+
+commit 0d4beaf597277506cc842a6a641cadf16315fea2
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sat Aug 22 15:44:42 2015 +0200
+
+    added showing log levels in output
+
+commit 35419d0b5556e47d3b9bc892902f6b26bdf209d6
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Thu Jul 16 21:53:23 2015 +0200
+
+    unused include removed; updated old comment
+
+commit b77620a8df59a33ce04003a482034dd17666bfbe
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Mon May 4 10:32:38 2015 +0200
+
+    stylistic fixes
+
+commit d0b0cfd573dbe3e611f8d2cec881ac81907436bd
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Mon May 4 10:18:16 2015 +0200
+
+    now asserting ulog_setup()
+
+commit 72897b84fba60484371510a772d755e470cf2c40
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Mon May 4 10:09:06 2015 +0200
+
+    more tests
+
+commit 4880c092ec4044e9326b862a8e0a9c21505ec84f
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Tue Apr 28 16:12:21 2015 -0700
+
+    global ulog_obj returned by getter is now const (note: state is a const pointer to writable object)
+
+commit 9679a74437cc2af3b344307d657c21bc5d837715
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Tue Apr 28 15:50:41 2015 -0700
+
+    updated changelog
+
 commit 78b1ea8d37f465ea05dfaf6ebbb736977004fb9f
 Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
 Date:   Tue Apr 28 15:50:21 2015 -0700

@@ -1,5 +1,5 @@
 # ulog
-Micro logging library written in C.
+Micro logging library written in C99.
 
 Usage:
 void log_to_stderr(
