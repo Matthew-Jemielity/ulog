@@ -14,7 +14,7 @@
 # include <ulog/status.h> /* ulog_status */
 
 /**
- * \brief Forward definition of ulog_pointer_list element.
+ * \brief Forward declaration of ulog_pointer_list element.
  */
 typedef struct ulog_pointer_list_element_struct ulog_pointer_list_element;
 
