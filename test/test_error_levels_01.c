@@ -63,11 +63,8 @@ debug_log(
 }
 
 int
-main( int argc, char * args[] )
+main( void )
 {
-    ( void ) argc;
-    ( void ) args;
-
     {
         ulog_ctrl ctrl = ulog_setup();
         assert( 0 == ulog_status_to_int( ctrl.status ));
