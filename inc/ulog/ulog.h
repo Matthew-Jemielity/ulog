@@ -162,6 +162,9 @@ typedef ulog_status
     ulog_log_handler const handler
 );
 
+/**
+ * \brief Opaque container for ulog object state.
+ */
 typedef struct ulog_obj_state_struct ulog_obj_state;
 
 /**
