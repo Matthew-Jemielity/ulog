@@ -35,6 +35,19 @@ struct ulog_obj_state_struct
     ulog_mutex_ctrl guard;
 };
 
+INDIRECT char
+ulog_level_to_char( ulog_level const level )
+{
+    switch( level )
+    {
+        case ERROR: return 'E';
+        case WARNING: return 'W';
+        case INFO: return 'I';
+        case DEBUG: return 'D';
+        default: return '?';
+    }
+}
+
 static uint64_t
 from_timespec( struct timespec const value )
 {

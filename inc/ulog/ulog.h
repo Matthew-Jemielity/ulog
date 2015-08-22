@@ -36,6 +36,21 @@ typedef enum
 ulog_level;
 
 /**
+ * \brief Returns single letter representation of log level.
+ * \param level Log level.
+ * \return Single character representing level.
+ * \warning If invalid value is passed, '?' is returned.
+ *
+ * Level representation:
+ * ERROR - 'E'
+ * WARNING - 'W'
+ * INFO - 'I'
+ * DEBUG - 'D'
+ */
+INDIRECT char
+ulog_level_to_char( ulog_level const level );
+
+/**
  * \brief Returns current time.
  * \return Time in nanoseconds, with at least millisecond precision.
  *
@@ -71,7 +86,8 @@ ulog( ulog_level const level, char const * const format, ... );
 # define ULOG____( LEVEL, FORMAT, ... ) \
     ulog( \
         LEVEL, \
-        "[%"PRIu64"][%s:%s:%u] " FORMAT "%c", \
+        "[%c][%"PRIu64"][%s:%s:%u] " FORMAT "%c", \
+        ulog_level_to_char(LEVEL), \
         ulog_current_time(), \
         __FILE__, \
         __func__, \
