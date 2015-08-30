@@ -33,7 +33,7 @@ struct ulog_obj_state_struct
     bool initialized;
     ulog_level verbosity;
     ulog_pointer_list handlers;
-    ulog_mutex_ctrl guard;
+    ulog_mutex guard;
 };
 
 INDIRECT char
@@ -105,7 +105,7 @@ add( ulog_obj const self, ulog_log_handler const handler )
     element->handler = handler;
 
     ulog_status result =
-        self.state->guard.mutex.lock( self.state->guard.mutex );
+        self.state->guard.op->lock( &( self.state->guard ));
     if( 0 != ulog_status_to_int( result ))
     {
         free( element );
@@ -125,7 +125,7 @@ add( ulog_obj const self, ulog_log_handler const handler )
         result =
             self.state->handlers.add( &( self.state->handlers ), element );
     }
-    UNUSED( self.state->guard.mutex.unlock( self.state->guard.mutex ));
+    UNUSED( self.state->guard.op->unlock( &( self.state->guard )));
     if( 0 != ulog_status_to_int( result ))
     {
         free( element );
@@ -173,7 +173,7 @@ remove( ulog_obj const self, ulog_log_handler const handler )
     };
 
     ulog_status result =
-        self.state->guard.mutex.lock( self.state->guard.mutex );
+        self.state->guard.op->lock( &( self.state->guard ));
     if( 0 != ulog_status_to_int( result ))
     {
         return result;
@@ -195,7 +195,7 @@ remove( ulog_obj const self, ulog_log_handler const handler )
             free( data.pointer );
         }
     }
-    UNUSED( self.state->guard.mutex.unlock( self.state->guard.mutex ));
+    UNUSED( self.state->guard.op->unlock( &( self.state->guard )));
     return result;
 }
 
@@ -217,13 +217,13 @@ verbosity( ulog_obj const self, ulog_level const verbosity )
     }
 
     ulog_status result =
-        self.state->guard.mutex.lock( self.state->guard.mutex );
+        self.state->guard.op->lock( &( self.state->guard ));
     if( 0 != ulog_status_to_int( result ))
     {
         return result;
     }
     self.state->verbosity = verbosity;
-    return self.state->guard.mutex.unlock( self.state->guard.mutex );
+    return self.state->guard.op->unlock( &( self.state->guard ));
 }
 
 static ulog_obj const *
@@ -291,8 +291,8 @@ ulog( ulog_level const level, char const * const format, ... )
     va_start( data.args, format );
 
     ulog_status result =
-        get_global_ulog_obj()->state->guard.mutex.lock(
-            get_global_ulog_obj()->state->guard.mutex
+        get_global_ulog_obj()->state->guard.op->lock(
+            &( get_global_ulog_obj()->state->guard )
         );
     if( 0 == ulog_status_to_int( result ))
     {
@@ -305,8 +305,8 @@ ulog( ulog_level const level, char const * const format, ... )
             ( 0 == ulog_status_to_int( result ))
             || ( ENODATA == ulog_status_to_int( result ))
         );
-        UNUSED( get_global_ulog_obj()->state->guard.mutex.unlock(
-            get_global_ulog_obj()->state->guard.mutex
+        UNUSED( get_global_ulog_obj()->state->guard.op->unlock(
+            &( get_global_ulog_obj()->state->guard )
         ));
     }
 
@@ -329,12 +329,13 @@ ulog_setup( void )
         };
     }
 
-    ulog_mutex_ctrl const guard = ulog_mutex_setup();
-    if( 0 != ulog_status_to_int( guard.status ))
+    ulog_mutex guard = ulog_mutex_get();
+    ulog_status const guard_status = guard.op->setup( &guard );
+    if( 0 != ulog_status_to_int( guard_status ))
     {
         return ( ulog_ctrl )
         {
-            .status = guard.status,
+            .status = guard_status,
             .log = ( ulog_obj ) { NULL, }
         };
     }
@@ -378,7 +379,7 @@ ulog_cleanup( ulog_ctrl const ctrl )
     }
 
     ulog_status result =
-        ctrl.log.state->guard.mutex.lock( ctrl.log.state->guard.mutex );
+        ctrl.log.state->guard.op->lock( &( ctrl.log.state->guard ));
     if( 0 != ulog_status_to_int( result ))
     {
         return result;
@@ -393,13 +394,14 @@ ulog_cleanup( ulog_ctrl const ctrl )
         || ( ENODATA == ulog_status_to_int( result ))
     );
     result = ulog_pointer_list_cleanup( &( ctrl.log.state->handlers ));
-    UNUSED( ctrl.log.state->guard.mutex.unlock( ctrl.log.state->guard.mutex ));
+    UNUSED( ctrl.log.state->guard.op->unlock( &( ctrl.log.state->guard )));
     if(
         ( 0 == ulog_status_to_int( result ))
         || ( ENODATA == ulog_status_to_int( result ))
     )
     {
-        result = ulog_mutex_cleanup( ctrl.log.state->guard );
+        result =
+          ctrl.log.state->guard.op->cleanup( &( ctrl.log.state->guard ));
     }
     ctrl.log.state->initialized =
         ( 0 != ulog_status_to_int( result ));
