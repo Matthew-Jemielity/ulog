@@ -17,14 +17,18 @@
 
 /**
  * \brief Forward declaration of opaque ulog_mutex state.
+ * \see struct ulog_mutex_state_struct
  */
 typedef struct ulog_mutex_state_struct ulog_mutex_state;
 /**
  * \brief Forward declaration of mutex operations table.
+ * \see struct ulog_mutex_op_table_struct
  */
 typedef struct ulog_mutex_op_table_struct ulog_mutex_op_table;
 /**
  * \brief Definition of mutex object.
+ * \see ulog_mutex_state
+ * \see ulog_mutex_op_table
  *
  * The ulog_mutex object starts its life cycle in a default,
  * uninitialized state. To use it, setup() has to be called.
@@ -88,6 +92,7 @@ typedef struct
  * \return Status object.
  * \see THREADUNSAFE
  * \see ulog_status
+ * \see ulog_mutex
  *
  * This type of operation changes the state of ulog_mutex object.
  * It is not thread-safe. Note that calling cleanup() when mutex
@@ -121,6 +126,7 @@ typedef THREADUNSAFE ulog_status
  * \param self The ulog_mutex object on which we'll operate.
  * \return Status object.
  * \see ulog_status
+ * \see ulog_mutex
  *
  * Recursively locking the mutex is undefined behaviour. Unlocking
  * mutex that is not locked or is held by another thread is also
@@ -141,6 +147,8 @@ typedef ulog_status
     ( * ulog_mutex_op )( ulog_mutex const * const self );
 /**
  * \brief Definition of mutex operations table.
+ * \see ulog_mutex_ctrl
+ * \see ulog_mutex_op
  */
 struct ulog_mutex_op_table_struct
 {
@@ -157,6 +165,7 @@ struct ulog_mutex_op_table_struct
 /**
  * \brief Creates mutex object in default state.
  * \return Mutex object.
+ * \see ulog_mutex
  */
 ulog_mutex
 ulog_mutex_get( void );
