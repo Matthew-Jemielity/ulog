@@ -1,6 +1,6 @@
 /**
  * \author      Mateusz Jemielity matthew.jemielity@gmail.com
- * \brief       Definition of ulog_status helper methods.
+ * \brief       Implements ulog_status helper methods.
  * \date        2015/08/28 22:45:59 AM
  * \file        status.c
  * \version     1.1
