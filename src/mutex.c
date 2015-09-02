@@ -313,6 +313,6 @@ cleanup( ulog_mutex * const self )
 ulog_mutex
 ulog_mutex_get( void )
 {
-  return ( ulog_mutex ) { .state = &guard, .op = &default_state };
+    return ( ulog_mutex ) { .state = &guard, .op = &default_state };
 }
 
