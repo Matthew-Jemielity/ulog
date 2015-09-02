@@ -207,7 +207,7 @@ lock( ulog_mutex const * const self )
     return generic_operation( self, &( generic_arg[ LOCK ] ));
 }
 
-static ulog_status
+static inline ulog_status
 unlock( ulog_mutex const * const self )
 {
     return generic_operation( self, &( generic_arg[ UNLOCK ] ));
@@ -293,9 +293,9 @@ cleanup( ulog_mutex * const self )
 {
     if( !valid( self )) { return generic_invalid( self ); }
     /*
-     * in case of pthreads (and possibly C11 threads, since they seem to use
+     * In case of pthreads (and possibly C11 threads, since they seem to use
      * pthreads) the implementation should allow safe destruction of mutex
-     * right after it has been unlocked
+     * right after it has been unlocked.
      */
     self->op->lock( self );
     self->op->unlock( self );
