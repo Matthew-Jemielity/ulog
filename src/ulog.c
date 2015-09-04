@@ -10,7 +10,13 @@
 
 #define _POSIX_C_SOURCE 199309L /* for clock_gettime */
 
-#include <assert.h>
+#include <ulog/ulog.h>
+#include <ulog/listable.h> /* ulog_listable */
+#include <ulog/mutex.h> /* ulog_mutex */
+#include <ulog/status.h> /* ulog_status */
+#include <ulog/universal.h> /* THREADUNSAFE, UNUSED */
+
+#include <assert.h> /* assert */
 #include <errno.h> /* EALREADY, EINVAL, etc. */
 #include <stdbool.h> /* bool */
 #include <stddef.h> /* NULL */
@@ -18,11 +24,6 @@
 #include <stdlib.h> /* malloc, free */
 #include <string.h> /* memcpy */
 #include <time.h> /* clock_gettime, struct timespec */
-#include <ulog/ulog.h>
-#include <ulog/mutex.h> /* ulog_mutex */
-#include <ulog/pointer_list.h> /* ulog_pointer_list */
-#include <ulog/status.h> /* ulog_status */
-#include <ulog/universal.h> /* THREADUNSAFE, UNUSED */
 
 #define NANOSECONDS_IN_MICROSECOND 1000U
 #define MICROSECONDS_IN_MILLISECOND 1000U
@@ -32,7 +33,7 @@ struct ulog_obj_state_struct
 {
     bool initialized;
     ulog_level verbosity;
-    ulog_pointer_list handlers;
+    ulog_list_ctrl handlers;
     ulog_mutex guard;
 };
 
@@ -73,17 +74,25 @@ ulog_current_time( void )
 typedef struct
 {
     ulog_log_handler handler;
+    ulog_listable list;
 }
-pointer_list_element;
+handler_list_element;
+
+static handler_list_element *
+get_handler_list_element( ulog_listable * const element )
+{
+    return ulog_listable_get_container( element, handler_list_element, list );
+}
 
 static ulog_status
-adding_callback( void * const pointer, void * const userdata )
+adding_callback( ulog_listable * const element, void * const userdata )
 {
-    pointer_list_element const * const element = pointer;
-    pointer_list_element const * const data = userdata;
+    handler_list_element const * const item =
+        get_handler_list_element( element );
+    handler_list_element const * const addition = userdata;
 
     return ulog_status_from_int(
-            ( element->handler == data->handler ) ? EEXIST : 0
+            ( item->handler == addition->handler ) ? EEXIST : 0
         );
 }
 
@@ -95,14 +104,15 @@ add( ulog_obj const self, ulog_log_handler const handler )
         return ulog_status_from_int( EINVAL );
     }
 
-    pointer_list_element * const element =
-        malloc( sizeof( pointer_list_element ));
+    handler_list_element * const element =
+        malloc( sizeof( handler_list_element ));
     if( NULL == element )
     {
         return ulog_status_from_int( ENOMEM );
     }
 
     element->handler = handler;
+    element->list = ulog_listable_get();
 
     ulog_status result =
         self.state->guard.op->lock( &( self.state->guard ));
@@ -111,7 +121,7 @@ add( ulog_obj const self, ulog_log_handler const handler )
         free( element );
         return result;
     }
-    result = self.state->handlers.foreach(
+    result = self.state->handlers.op->foreach(
             &( self.state->handlers ),
             adding_callback,
             element
@@ -119,11 +129,14 @@ add( ulog_obj const self, ulog_log_handler const handler )
     /* if handler already exists result will be EEXIST */
     if(
         ( 0 == ulog_status_to_int( result ))
-        || ( ENODATA == ulog_status_to_int( result ))
+        || ( ENOENT == ulog_status_to_int( result ))
     )
     {
         result =
-            self.state->handlers.add( &( self.state->handlers ), element );
+            self.state->handlers.op->add(
+                &( self.state->handlers ),
+                &( element->list )
+            );
     }
     UNUSED( self.state->guard.op->unlock( &( self.state->guard )));
     if( 0 != ulog_status_to_int( result ))
@@ -140,20 +153,21 @@ add( ulog_obj const self, ulog_log_handler const handler )
 typedef struct
 {
     ulog_log_handler handler;
-    void * pointer;
+    ulog_listable * element;
 }
 removal_userdata;
 
 static ulog_status
-removal_callback( void * const pointer, void * const userdata )
+removal_callback( ulog_listable * const element, void * const userdata )
 {
-    pointer_list_element const * const element = pointer;
+    handler_list_element const * const item =
+        get_handler_list_element( element );
     removal_userdata * const data = userdata;
 
     /* exactly one element will be equal */
-    if( element->handler == data->handler )
+    if( item->handler == data->handler )
     {
-        data->pointer = pointer;
+        data->element = element;
     }
     return ulog_status_from_int( 0 );
 }
@@ -169,7 +183,7 @@ remove( ulog_obj const self, ulog_log_handler const handler )
     removal_userdata data =
     {
         .handler = handler,
-        .pointer = NULL
+        .element = NULL
     };
 
     ulog_status result =
@@ -178,7 +192,7 @@ remove( ulog_obj const self, ulog_log_handler const handler )
     {
         return result;
     }
-    result = self.state->handlers.foreach(
+    result = self.state->handlers.op->foreach(
         &( self.state->handlers ),
         removal_callback,
         &data
@@ -186,13 +200,13 @@ remove( ulog_obj const self, ulog_log_handler const handler )
     if( 0 == ulog_status_to_int( result ))
     {
         /* data.pointer now contains pointer to remove from list */
-        result = self.state->handlers.remove(
+        result = self.state->handlers.op->remove(
             &( self.state->handlers ),
-            data.pointer
+            data.element
         );
         if( 0 == ulog_status_to_int( result ))
         {
-            free( data.pointer );
+            free( get_handler_list_element( data.element ));
         }
     }
     UNUSED( self.state->guard.op->unlock( &( self.state->guard )));
@@ -258,14 +272,15 @@ callback_userdata;
  * we can omit most of the error checks
  */
 static ulog_status
-handler_callback( void * const pointer, void * const userdata )
+handler_callback( ulog_listable * const element, void * const userdata )
 {
-    pointer_list_element const * const element = pointer;
+    handler_list_element const * const item =
+        get_handler_list_element( element );
     callback_userdata * data = userdata;
 
     va_list args;
     va_copy( args, data->args );
-    element->handler( data->level, data->format, args );
+    item->handler( data->level, data->format, args );
     va_end( args );
     return ulog_status_from_int( 0 );
 }
@@ -296,14 +311,14 @@ ulog( ulog_level const level, char const * const format, ... )
         );
     if( 0 == ulog_status_to_int( result ))
     {
-        result = get_global_ulog_obj()->state->handlers.foreach(
+        result = get_global_ulog_obj()->state->handlers.op->foreach(
             &( get_global_ulog_obj()->state->handlers ),
             handler_callback,
             &data
         );
         assert(
             ( 0 == ulog_status_to_int( result ))
-            || ( ENODATA == ulog_status_to_int( result ))
+            || ( ENOENT == ulog_status_to_int( result ))
         );
         UNUSED( get_global_ulog_obj()->state->guard.op->unlock(
             &( get_global_ulog_obj()->state->guard )
@@ -339,7 +354,7 @@ ulog_setup( void )
             .log = ( ulog_obj ) { NULL, }
         };
     }
-    ulog_pointer_list const handlers = ulog_pointer_list_setup();
+    ulog_list_ctrl const handlers = ulog_list_ctrl_get();
 
     *( get_global_ulog_obj()->state ) = ( ulog_obj_state )
     {
@@ -356,10 +371,10 @@ ulog_setup( void )
 }
 
 static ulog_status
-free_callback( void * const pointer, void * const userdata )
+free_callback( ulog_listable * const element, void * const userdata )
 {
     UNUSED( userdata );
-    free( pointer );
+    free( get_handler_list_element( element ));
     return ulog_status_from_int( 0 );
 }
 
@@ -384,20 +399,19 @@ ulog_cleanup( ulog_ctrl const ctrl )
     {
         return result;
     }
-    result = ctrl.log.state->handlers.foreach(
+    result = ctrl.log.state->handlers.op->foreach(
         &( ctrl.log.state->handlers ),
         free_callback,
         NULL
     );
     assert(
         ( 0 == ulog_status_to_int( result ))
-        || ( ENODATA == ulog_status_to_int( result ))
+        || ( ENOENT == ulog_status_to_int( result ))
     );
-    result = ulog_pointer_list_cleanup( &( ctrl.log.state->handlers ));
     UNUSED( ctrl.log.state->guard.op->unlock( &( ctrl.log.state->guard )));
     if(
         ( 0 == ulog_status_to_int( result ))
-        || ( ENODATA == ulog_status_to_int( result ))
+        || ( ENOENT == ulog_status_to_int( result ))
     )
     {
         result =

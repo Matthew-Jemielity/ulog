@@ -153,7 +153,7 @@ typedef void
  * d) codes returned by ulog_pointer_list add method;
  * 3. removing handler:
  * a) codes returned by ulog_mutex  locking and unlocking methods;
- * b) codes returned by ulog_pointer_list remove method.
+ * b) codes returned by ulog_list_ctrl remove method.
  * The methods implementing this typedef are thread-safe.
  */
 typedef ulog_status
