@@ -12,10 +12,11 @@ void log_to_stderr(
     fflush( stderr );
 }
 
-ulog_ctrl ctrl = ulog_setup();
-ctrl.log.add( ctrl.log, log_to_stderr );
+ulog_obj const * const ulog = ulog_obj_get();
+ulog->op->setup( ulog );
+ulog->op->add( ulog, log_to_stderr );
 ...
 UERROR( "my log here" );
 ...
-ulog_cleanup( ctrl );
+ulog->op->cleanup( ulog );
 

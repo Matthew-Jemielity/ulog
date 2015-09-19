@@ -86,7 +86,7 @@ add_callback( ulog_listable * const element, void * const userdata )
        */
       return ulog_status_descriptive( 0, "listable object added to list" );
     }
-    return ulog_status_from_int(EAGAIN);
+    return ulog_status_descriptive(EAGAIN, "check next element");
 }
 
 static inline ulog_status

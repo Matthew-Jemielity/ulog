@@ -24,9 +24,9 @@ void * foo( void * arg )
   ulog_mutex * mutex = arg;
   for( unsigned i = 0; i < loops; ++i )
   {
-    assert( 0 == ulog_status_to_int( mutex->op->lock( mutex )));
+    assert( ulog_status_success( mutex->op->lock( mutex )));
     ++resource;
-    assert( 0 == ulog_status_to_int( mutex->op->unlock( mutex )));
+    assert( ulog_status_success( mutex->op->unlock( mutex )));
   }
   return NULL;
 }
@@ -34,7 +34,7 @@ void * foo( void * arg )
 int main(void)
 {
     ulog_mutex mutex = ulog_mutex_get();
-    assert( 0 == ulog_status_to_int( mutex.op->setup( &mutex )));
+    assert( ulog_status_success( mutex.op->setup( &mutex )));
 
     pthread_t t1, t2, t3, t4, t5, t6, t7, t8, t9, t10;
     assert( 0 == pthread_create( &t1, NULL, foo, &mutex ));
@@ -60,7 +60,7 @@ int main(void)
 
     assert(( 10 * loops ) == resource );
 
-    assert( 0 == ulog_status_to_int( mutex.op->cleanup( &mutex )));
+    assert( ulog_status_success( mutex.op->cleanup( &mutex )));
     return 0;
 }
 

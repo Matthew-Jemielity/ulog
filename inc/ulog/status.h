@@ -11,6 +11,8 @@
 #ifndef ULOG_STATUS_H__
 # define ULOG_STATUS_H__
 
+# include <stdbool.h> /* bool */
+
 /**
  * \brief Definition of ulog_status type.
  *
@@ -27,7 +29,6 @@ typedef struct
     char const * description;
 }
 ulog_status;
-
 /**
  * \brief Creates valid status from given code and description.
  * \param code Integer to translate.
@@ -41,22 +42,6 @@ ulog_status;
  */
 ulog_status
 ulog_status_descriptive( int const code, char const * const description );
-
-/**
- * \brief Translates int to ulog_status.
- * \param code Integer to translate.
- * \return Valid ulog_status representing the given code.
- * \see ulog_status
- *
- * Note that definition of ulog_status may change. It is better to always
- * use this method for translation instead of direct use of ulog_status
- * internal structure. Status description will be set to default.
- * The following is always true:
- * code == ulog_status_to_int(ulog_status_from_int(code))
- */
-ulog_status
-ulog_status_from_int( int const code );
-
 /**
  * \brief Translates ulog_status to int for easy manipulation and comparison.
  * \param status The ulog_status structure to translate.
@@ -67,10 +52,23 @@ ulog_status_from_int( int const code );
  * use this method for translation instead of direct use of ulog_status
  * internal structure.
  * The following is always true:
- * code == ulog_status_to_int(ulog_status_from_int(code))
+ * code == ulog_status_to_int(ulog_status_descriptive(code, "string"))
  */
 int
 ulog_status_to_int( ulog_status const status );
+/**
+ * \brief Checks whether status code represents success.
+ * \param status The ulog_status structure to evaluate.
+ * \return True if status code is successful, false otherwise.
+ * \see ulog_status
+ *
+ * Note that definition of ulog_status may change. Therefore it is better to
+ * always use this function for evaluation instead of checking ulog_status
+ * directly. It's also possible that the value of successful code will change,
+ * so checking it with ulog_status_to_int may become invalid.
+ */
+bool
+ulog_status_success( ulog_status const status );
 
 #endif /* ULOG_STATUS_H__ */
 

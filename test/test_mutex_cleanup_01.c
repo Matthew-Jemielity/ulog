@@ -24,9 +24,9 @@ int main(void)
     assert( EINVAL == ulog_status_to_int( mutex.op->cleanup( NULL )));
     assert( EALREADY == ulog_status_to_int( mutex.op->cleanup( &mutex )));
 
-    assert( 0 == ulog_status_to_int( mutex.op->setup( &mutex )));
+    assert( ulog_status_success( mutex.op->setup( &mutex )));
 
-    assert( 0 == ulog_status_to_int( mutex.op->cleanup( &mutex )));
+    assert( ulog_status_success( mutex.op->cleanup( &mutex )));
     assert( default_state == ( intptr_t ) mutex.op );
     assert( EALREADY == ulog_status_to_int( mutex.op->cleanup( &mutex )));
     assert( default_state == ( intptr_t ) mutex.op );

@@ -30,7 +30,7 @@ test_callback( ulog_listable * const element, void * const userdata )
     test_struct * const t =
         ulog_listable_get_container( element, test_struct, list );
     assert( test_value == t->i );
-    return ulog_status_from_int( 0 );
+    return ulog_status_decriptive( 0, "success" );
 }
 
 int
@@ -40,15 +40,15 @@ main(void)
     test_struct t2 = { .i = test_value, .list = ulog_listable_get() };
     ulog_list_ctrl ctrl = ulog_list_ctrl_get();
 
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t1.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t2.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t2.list ))));
     assert(
-        0 == ulog_status_to_int(
+        ulog_status_success(
             ctrl.op->foreach( &ctrl, test_callback, NULL )
         )
     );
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t1.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t2.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t2.list ))));
 
     return 0;
 }

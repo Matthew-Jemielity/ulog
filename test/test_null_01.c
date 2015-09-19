@@ -17,12 +17,15 @@
 int
 main( void )
 {
-    ulog_ctrl ctrl = ulog_setup();
-    assert( 0 == ulog_status_to_int( ctrl.status ));
+    ulog_obj const * const ulog = ulog_obj_get();
 
     UERROR( "this shouldn't be printed" );
 
-    assert( 0 == ulog_status_to_int( ulog_cleanup( ctrl )));
+    assert( ulog_status_success( ulog->op->setup( ulog )));
+
+    UERROR( "this shouldn't be printed" );
+
+    assert( ulog_status_success( ulog->op->cleanup( ulog )));
     return 0;
 }
 

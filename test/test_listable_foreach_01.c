@@ -31,7 +31,7 @@ test_callback( ulog_listable * const element, void * const userdata )
     test_struct * const t =
         ulog_listable_get_container( element, test_struct, list );
     assert( test_value == t->i );
-    return ulog_status_from_int( 0 );
+    return ulog_status_descriptive( 0, "test callback successful" );
 }
 
 static int counter;
@@ -42,7 +42,7 @@ counter_callback( ulog_listable * const element, void * const userdata )
     UNUSED( element );
     UNUSED( userdata );
     ++counter;
-    return ulog_status_from_int( 0 );
+    return ulog_status_descriptive( 0, "counter callback successful" );
 }
 
 static ulog_status
@@ -51,7 +51,7 @@ assert_callback( ulog_listable * const element, void * const userdata )
     UNUSED( element );
     UNUSED( userdata );
     assert( 0 );
-    return ulog_status_from_int( 0 );
+    return ulog_status_descriptive( 0, "assert callback successful" );
 }
 
 static ulog_status
@@ -59,7 +59,7 @@ failure_callback( ulog_listable * const element, void * const userdata )
 {
     UNUSED( element );
     UNUSED( userdata );
-    return ulog_status_from_int( test_value );
+    return ulog_status_descriptive( test_value, "forced failure in callback" );
 }
 
 int
@@ -87,17 +87,17 @@ main(void)
         )
     );
 
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t1.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t2.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t2.list ))));
     assert(
-        0 == ulog_status_to_int(
+        ulog_status_success(
             ctrl.op->foreach( &ctrl, test_callback, NULL )
         )
     );
 
     counter = 0;
     assert(
-        0 == ulog_status_to_int(
+        ulog_status_success(
             ctrl.op->foreach( &ctrl, counter_callback, NULL )
         )
     );
@@ -109,8 +109,8 @@ main(void)
         )
     );
 
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t1.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t2.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t2.list ))));
 
     return 0;
 }

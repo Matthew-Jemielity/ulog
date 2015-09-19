@@ -10,6 +10,7 @@
 
 #include <ulog/status.h>
 
+#include <stdbool.h> /* bool */
 #include <stddef.h> /* NULL */
 
 static char const * const default_description = "no details available";
@@ -24,18 +25,15 @@ ulog_status_descriptive( int const code, char const * const description )
     };
 }
 
-ulog_status
-ulog_status_from_int( int const code )
-{
-    return ( ulog_status ) {
-        .code = code,
-        .description = default_description
-    };
-}
-
 int
 ulog_status_to_int( ulog_status const status )
 {
     return status.code;
+}
+
+bool
+ulog_status_success( ulog_status const status )
+{
+    return (0 == status.code);
 }
 

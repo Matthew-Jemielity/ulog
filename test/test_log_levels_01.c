@@ -66,35 +66,35 @@ int
 main( void )
 {
     {
-        ulog_ctrl ctrl = ulog_setup();
-        assert( 0 == ulog_status_to_int( ctrl.status ));
-        assert( 0 == ulog_status_to_int( ctrl.log.add( ctrl.log, error_log )));
+        ulog_obj const * const ulog = ulog_obj_get();
+        assert( ulog_status_success( ulog->op->setup( ulog )));
+        assert( ulog_status_success( ulog->op->add( ulog, error_log )));
         UERROR( "" );
-        assert( 0 == ulog_status_to_int( ulog_cleanup( ctrl )));
+        assert( ulog_status_success( ulog->op->cleanup( ulog )));
     }
 
     {
-        ulog_ctrl ctrl = ulog_setup();
-        assert( 0 == ulog_status_to_int( ctrl.status ));
-        assert( 0 == ulog_status_to_int( ctrl.log.add( ctrl.log, warning_log )));
+        ulog_obj const * const ulog = ulog_obj_get();
+        assert( ulog_status_success( ulog->op->setup( ulog )));
+        assert( ulog_status_success( ulog->op->add( ulog, warning_log )));
         UWARNING( "" );
-        assert( 0 == ulog_status_to_int( ulog_cleanup( ctrl )));
+        assert( ulog_status_success( ulog->op->cleanup( ulog )));
     }
 
     {
-        ulog_ctrl ctrl = ulog_setup();
-        assert( 0 == ulog_status_to_int( ctrl.status ));
-        assert( 0 == ulog_status_to_int( ctrl.log.add( ctrl.log, info_log )));
+        ulog_obj const * const ulog = ulog_obj_get();
+        assert( ulog_status_success( ulog->op->setup( ulog )));
+        assert( ulog_status_success( ulog->op->add( ulog, info_log )));
         UINFO( "" );
-        assert( 0 == ulog_status_to_int( ulog_cleanup( ctrl )));
+        assert( ulog_status_success( ulog->op->cleanup( ulog )));
     }
 
     {
-        ulog_ctrl ctrl = ulog_setup();
-        assert( 0 == ulog_status_to_int( ctrl.status ));
-        assert( 0 == ulog_status_to_int( ctrl.log.add( ctrl.log, debug_log )));
+        ulog_obj const * const ulog = ulog_obj_get();
+        assert( ulog_status_success( ulog->op->setup( ulog )));
+        assert( ulog_status_success( ulog->op->add( ulog, debug_log )));
         UDEBUG( "" );
-        assert( 0 == ulog_status_to_int( ulog_cleanup( ctrl )));
+        assert( ulog_status_success( ulog->op->cleanup( ulog )));
     }
 
     return 0;

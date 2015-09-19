@@ -42,15 +42,17 @@ log_to_stdout(
 int
 main( void )
 {
-    ulog_ctrl ctrl = ulog_setup();
-    assert( 0 == ulog_status_to_int( ctrl.status ));
-    assert( 0 == ulog_status_to_int( ctrl.log.add( ctrl.log, log_to_stderr )));
-    assert( 0 == ulog_status_to_int( ctrl.log.add( ctrl.log, log_to_stdout )));
+    ulog_obj const * const ulog = ulog_obj_get();
+    assert( ulog_status_success( ulog->op->setup( ulog )));
+    assert( ulog_status_success( ulog->op->add( ulog, log_to_stderr )));
+    assert( ulog_status_success( ulog->op->add( ulog, log_to_stdout )));
 
-    assert( EEXIST == ulog_status_to_int( ctrl.log.add( ctrl.log, log_to_stderr )));
-    assert( EEXIST == ulog_status_to_int( ctrl.log.add( ctrl.log, log_to_stdout )));
+    assert( EEXIST == ulog_status_to_int(
+            ulog->op->add( ulog, log_to_stderr )));
+    assert( EEXIST == ulog_status_to_int(
+            ulog->op->add( ulog, log_to_stdout )));
 
-    assert( 0 == ulog_status_to_int( ulog_cleanup( ctrl )));
+    assert( ulog_status_success( ulog->op->cleanup( ulog )));
     return 0;
 }
 

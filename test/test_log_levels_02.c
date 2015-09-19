@@ -43,31 +43,33 @@ int
 main( void )
 {
     {
-        ulog_ctrl ctrl = ulog_setup(); /* verbosity is DEBUG by default */
-        assert( 0 == ulog_status_to_int( ctrl.status ));
-        assert( 0 == ulog_status_to_int( ctrl.log.add( ctrl.log, debug_log )));
+        ulog_obj const * const ulog = ulog_obj_get();
+        /* verbosity is DEBUG by default */
+        assert( ulog_status_success( ulog->op->setup( ulog )));
+        assert( ulog_status_success( ulog->op->add( ulog, debug_log )));
         UDEBUG();
-        assert( 0 == ulog_status_to_int( ulog_cleanup( ctrl )));
+        assert( ulog_status_success( ulog->op->cleanup( ulog )));
     }
 
     {
-        ulog_ctrl ctrl = ulog_setup(); /* verbosity is DEBUG by default */
-        assert( 0 == ulog_status_to_int( ctrl.status ));
-        assert( 0 == ulog_status_to_int(
-                ctrl.log.add( ctrl.log, should_not_trigger )));
-        assert( 0 == ulog_status_to_int(
-                ctrl.log.verbosity( ctrl.log, INFO )));
+        ulog_obj const * const ulog = ulog_obj_get();
+        /* verbosity is DEBUG by default */
+        assert( ulog_status_success( ulog->op->setup( ulog )));
+        assert( ulog_status_success(
+                ulog->op->add( ulog, should_not_trigger )));
+        assert( ulog_status_success(
+                ulog->op->verbosity( ulog, INFO )));
         UDEBUG();
-        assert( 0 == ulog_status_to_int(
-                ctrl.log.verbosity( ctrl.log, WARNING )));
+        assert( ulog_status_success(
+                ulog->op->verbosity( ulog, WARNING )));
         UDEBUG();
         UINFO();
-        assert( 0 == ulog_status_to_int(
-                ctrl.log.verbosity( ctrl.log, ERROR )));
+        assert( ulog_status_success(
+                ulog->op->verbosity( ulog, ERROR )));
         UDEBUG();
         UINFO();
         UWARNING();
-        assert( 0 == ulog_status_to_int( ulog_cleanup( ctrl )));
+        assert( ulog_status_success( ulog->op->cleanup( ulog )));
     }
 
     return 0;

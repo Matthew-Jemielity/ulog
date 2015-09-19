@@ -38,29 +38,29 @@ main(void)
     assert( ENOENT == ulog_status_to_int(
             ctrl.op->remove( &ctrl, &( t1.list ))));
 
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t1.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t1.list ))));
     assert( ENOENT == ulog_status_to_int(
             ctrl.op->remove( &ctrl, &( t1.list ))));
 
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t1.list ))));
     ulog_listable invalid = { .next = NULL };
     assert( EEXIST == ulog_status_to_int( ctrl.op->remove( &ctrl, &invalid )));
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t2.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t3.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t2.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t3.list ))));
 
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t1.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t3.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t3.list ))));
     assert( EEXIST == ulog_status_to_int(
             ctrl.op->remove( &ctrl, &( t1.list ))));
     assert( EEXIST == ulog_status_to_int(
             ctrl.op->remove( &ctrl, &( t3.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t2.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t2.list ))));
 
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t3.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t1.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t2.list ))));
-    while( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, ctrl.head ))) {}
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t3.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t2.list ))));
+    while( ulog_status_success( ctrl.op->remove( &ctrl, ctrl.head ))) {}
     assert( ENOENT == ulog_status_to_int(
             ctrl.op->remove( &ctrl, &( t1.list ))));
     assert( ENOENT == ulog_status_to_int(

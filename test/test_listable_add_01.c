@@ -35,15 +35,15 @@ main(void)
     assert( EINVAL == ulog_status_to_int( ctrl.op->add( NULL, &( t1.list ))));
     assert( ENODATA == ulog_status_to_int( ctrl.op->add( &ctrl, NULL )));
 
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t1.list ))));
     assert( ENODATA == ulog_status_to_int(
             ctrl.op->add( &ctrl, &( t1.list ))));
 
     ulog_listable invalid = { .next = NULL };
     assert( ENODATA == ulog_status_to_int( ctrl.op->add( &ctrl, &invalid )));
 
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t2.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t3.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t2.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t3.list ))));
     assert( ENODATA == ulog_status_to_int(
             ctrl.op->add( &ctrl, &( t1.list ))));
     assert( ENODATA == ulog_status_to_int(
@@ -51,23 +51,23 @@ main(void)
     assert( ENODATA == ulog_status_to_int(
             ctrl.op->add( &ctrl, &( t3.list ))));
 
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t1.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t2.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t2.list ))));
     assert( ENODATA == ulog_status_to_int(
             ctrl.op->add( &ctrl, &( t3.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t1.list ))));
     assert( ENODATA == ulog_status_to_int(
             ctrl.op->add( &ctrl, &( t1.list ))));
 
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t1.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t3.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t3.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t1.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->add( &ctrl, &( t2.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t3.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t3.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->add( &ctrl, &( t2.list ))));
 
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t1.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t2.list ))));
-    assert( 0 == ulog_status_to_int( ctrl.op->remove( &ctrl, &( t3.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t1.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t2.list ))));
+    assert( ulog_status_success( ctrl.op->remove( &ctrl, &( t3.list ))));
 
     return 0;
 }

@@ -21,18 +21,18 @@ int main(void)
     ulog_mutex mutex = ulog_mutex_get();
     assert( EINVAL == ulog_status_to_int( mutex.op->lock( NULL )));
     assert( EINVAL == ulog_status_to_int( mutex.op->lock( &mutex )));
-    assert( 0 == ulog_status_to_int( mutex.op->setup( &mutex )));
+    assert( ulog_status_success( mutex.op->setup( &mutex )));
     intptr_t const setup_state = ( intptr_t ) mutex.op;
 
-    assert( 0 == ulog_status_to_int( mutex.op->lock( &mutex )));
+    assert( ulog_status_success( mutex.op->lock( &mutex )));
     assert( setup_state == ( intptr_t ) mutex.op );
 
-    assert( 0 == ulog_status_to_int( mutex.op->unlock( &mutex )));
+    assert( ulog_status_success( mutex.op->unlock( &mutex )));
     assert( setup_state == ( intptr_t ) mutex.op );
-    assert( 0 == ulog_status_to_int( mutex.op->lock( &mutex )));
-    assert( 0 == ulog_status_to_int( mutex.op->unlock( &mutex )));
+    assert( ulog_status_success( mutex.op->lock( &mutex )));
+    assert( ulog_status_success( mutex.op->unlock( &mutex )));
 
-    assert( 0 == ulog_status_to_int( mutex.op->cleanup( &mutex )));
+    assert( ulog_status_success( mutex.op->cleanup( &mutex )));
     return 0;
 }
 

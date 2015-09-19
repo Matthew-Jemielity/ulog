@@ -21,10 +21,10 @@ int main(void)
 
     for( int i = 0; i < 100000; ++i )
     {
-      assert( 0 == ulog_status_to_int( mutex.op->setup( &mutex )));
+      assert( ulog_status_success( mutex.op->setup( &mutex )));
       assert( default_state != ( intptr_t ) mutex.op );
 
-      assert( 0 == ulog_status_to_int( mutex.op->cleanup( &mutex )));
+      assert( ulog_status_success( mutex.op->cleanup( &mutex )));
     }
 
     return 0;

@@ -260,7 +260,7 @@ valid( ulog_mutex const * const self )
         );
 }
 
-THREADUNSAFE ulog_status
+static THREADUNSAFE ulog_status
 setup( ulog_mutex * const self )
 {
     if( !valid( self )) { return generic_invalid( self ); }
@@ -273,22 +273,20 @@ setup( ulog_mutex * const self )
         );
     }
     self->state = state;
+    self->op = &setup_state;
 
     ulog_status const result =
         generic_operation( self, &( generic_arg[ INIT ] ));
-    if( ulog_status_success( result ))
-    {
-        self->op = &setup_state;
-    }
-    else
+    if( !ulog_status_success( result ))
     {
         free( self->state );
         self->state = &guard;
+        self->op = &default_state;
     }
     return result;
 }
 
-THREADUNSAFE ulog_status
+static THREADUNSAFE ulog_status
 cleanup( ulog_mutex * const self )
 {
     if( !valid( self )) { return generic_invalid( self ); }

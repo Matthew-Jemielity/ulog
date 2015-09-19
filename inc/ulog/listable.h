@@ -75,7 +75,7 @@ struct ulog_listable_struct
  *    UNUSED(userdata);
  *    foo * const f = ulog_listable_get_container(element, foo, list);
  *    printf("%d\n", f->i);
- *    return ulog_status_from_int(0);
+ *    return ulog_status_descriptive(0, "success");
  * }
  *
  * foo f = { 23, ulog_listable_get() };
@@ -130,7 +130,7 @@ typedef ulog_status
  * \see ulog_status
  * \see ulog_listable
  *
- * The list control object's foreach() method takes this callback type as
+ * The list control object's foreach() operation takes this callback type as
  * an argument. This callback will be executed for each element in the list.
  * Macro ulog_listable_get_container() can be used to get container of the
  * listable element given. Callback execution will continue as long as the

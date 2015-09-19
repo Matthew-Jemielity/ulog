@@ -35,8 +35,8 @@ typedef struct ulog_mutex_op_table_struct ulog_mutex_op_table;
  * Note that setup changed the ulog_mutex object and is not
  * thread-safe. Afterwards lock() and unlock() are available.
  * Both lock() and unlock() are safe to use in threads. When
- * mutex object is no longer needed, its cleanup() method has
- * to be called. Cleanup method also changes the ulog_mutex
+ * mutex object is no longer needed, its cleanup() operation
+ * has to be called. Cleanup operation also changes ulog_mutex
  * object and is not thread-safe. Sample usage:
  * ulog_mutex m = ulog_mutex_get();
  * m.op->setup(&m);
@@ -120,7 +120,7 @@ typedef struct
  * information.
  */
 typedef THREADUNSAFE ulog_status
-    ( * ulog_mutex_ctrl )( ulog_mutex * const self );
+    ( * ulog_mutex_ctrl_op )( ulog_mutex * const self );
 /**
  * \brief Defines type of common operations on ulog_mutex object.
  * \param self The ulog_mutex object on which we'll operate.
@@ -147,21 +147,20 @@ typedef ulog_status
     ( * ulog_mutex_op )( ulog_mutex const * const self );
 /**
  * \brief Definition of mutex operations table.
- * \see ulog_mutex_ctrl
+ * \see ulog_mutex_ctrl_op
  * \see ulog_mutex_op
  */
 struct ulog_mutex_op_table_struct
 {
-    /** Mutex setup method. */
-    ulog_mutex_ctrl setup;
-    /** Mutex cleanup method */
-    ulog_mutex_ctrl cleanup;
-    /** Mutex locking method. */
+    /** Mutex setup operation. */
+    ulog_mutex_ctrl_op setup;
+    /** Mutex cleanup operation. */
+    ulog_mutex_ctrl_op cleanup;
+    /** Mutex locking operation. */
     ulog_mutex_op lock;
-    /** Mutex unlocking method. */
+    /** Mutex unlocking operation. */
     ulog_mutex_op unlock;
 };
-
 /**
  * \brief Creates mutex object in default state.
  * \return Mutex object.

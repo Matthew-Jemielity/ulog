@@ -19,7 +19,6 @@
  * used instead.
  */
 # define INDIRECT
-
 /**
  * \brief Specifies that a method is not thread-safe.
  *
@@ -27,7 +26,6 @@
  * (for example it uses static variables).
  */
 # define THREADUNSAFE
-
 /**
  * \brief Specifies that variable is not used in a compiler-friendly way.
  *

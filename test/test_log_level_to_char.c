@@ -14,10 +14,10 @@
 int
 main( void )
 {
-    assert( 'E' == ulog_level_to_char( ERROR ));
-    assert( 'W' == ulog_level_to_char( WARNING ));
-    assert( 'I' == ulog_level_to_char( INFO ));
-    assert( 'D' == ulog_level_to_char( DEBUG ));
-    assert( '?' == ulog_level_to_char( 0xFFFFFFFF ));
+    assert( 'E' == ulog_level_to_char_( ERROR ));
+    assert( 'W' == ulog_level_to_char_( WARNING ));
+    assert( 'I' == ulog_level_to_char_( INFO ));
+    assert( 'D' == ulog_level_to_char_( DEBUG ));
+    assert( '?' == ulog_level_to_char_( 0xFFFFFFFF ));
 }
 
