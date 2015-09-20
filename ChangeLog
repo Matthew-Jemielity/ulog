@@ -1,3 +1,69 @@
+commit 394d5b79b36b0f1f23b2f034194cff5b32243662
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sun Sep 20 02:15:43 2015 +0200
+
+    last fixes; added make check; ulog version bumped to 2.0 in configure
+
+commit 086c4df0547e2a524249c8dd8cae03c22daf4659
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sun Sep 20 00:46:52 2015 +0200
+
+    ulog v2.0
+
+commit 8ebe6b6856f87521c62e70d84ce0aa24482ebfdf
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Fri Sep 4 21:58:46 2015 +0200
+
+    linked list v1.2 ulog_pointer_list -> ulog_listable + ulog_list_ctrl
+
+commit 79aad85869011d0c7e5d33bdcefe58f429842564
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Wed Sep 2 22:55:48 2015 +0200
+
+    missing tab in mutex.c
+
+commit c8a79acb1d5df251931a26888f0ebf4c5235de22
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Wed Sep 2 21:39:46 2015 +0200
+
+    added inline to unlock, fixed some comments
+
+commit 3f9b88a0be0f8c53aa219033eeae3d4471e032e5
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Wed Sep 2 00:42:29 2015 +0200
+
+    word change in status.c comment
+
+commit 452a84d8b8fc653ec70d3b9be354dcc98afb03e1
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Wed Sep 2 00:39:59 2015 +0200
+
+    mutex v 1.2
+
+commit 1bc1f967aa7a50b4c5748b9ada0e2ee370778e9d
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Wed Sep 2 00:37:41 2015 +0200
+
+    fixed tests after mutex default state used guard instead of NULL
+
+commit def0527ef5f6fcf3aed86548412568e16102bf62
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Mon Aug 31 00:07:28 2015 +0200
+
+    small fixes in comments for ulog_mutex
+
+commit 89cde06e1cd8b1db496d9686be4abd9e8a3d5b25
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sun Aug 30 18:59:22 2015 +0200
+
+    ulog_mutex v1.1
+
+commit 5927be9ecb183c7821f283950bb3d11a1d6056c3
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sat Aug 22 17:22:18 2015 +0200
+
+    updated README (C99 instead of C), Changelog
+
 commit 45edeaf95a0f004a1cba805c69aa96081dfbf05c
 Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
 Date:   Sat Aug 22 17:17:33 2015 +0200
