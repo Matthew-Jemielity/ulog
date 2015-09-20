@@ -2,17 +2,18 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.64])
-AC_INIT([ulog], [1.0], [matthew.jemielity@gmail.com])
+AC_INIT([ulog], [2.0], [matthew.jemielity@gmail.com])
 AC_CONFIG_SRCDIR([src/ulog.c])
 AC_CONFIG_FILES([Makefile])
 
 AM_INIT_AUTOMAKE([-Wall])
-LT_INIT
 
 # Checks for programs.
 AM_PROG_AR
 AC_PROG_CC_C99
 # AC_PROG_CC_C11
+
+LT_INIT
 
 # Checks for libraries.
 AC_CHECK_LIB(pthread, pthread_mutex_init, [], [AC_MSG_ERROR([cannot find pthread shared library])])

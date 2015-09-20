@@ -30,7 +30,7 @@ test_callback( ulog_listable * const element, void * const userdata )
     test_struct * const t =
         ulog_listable_get_container( element, test_struct, list );
     assert( test_value == t->i );
-    return ulog_status_decriptive( 0, "success" );
+    return ulog_status_descriptive( 0, "success" );
 }
 
 int
