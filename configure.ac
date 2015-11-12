@@ -10,6 +10,7 @@ AM_INIT_AUTOMAKE([-Wall])
 
 # Checks for programs.
 AM_PROG_AR
+AM_PROG_CC_C_O
 AC_PROG_CC_C99
 # AC_PROG_CC_C11
 
