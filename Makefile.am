@@ -11,7 +11,7 @@ libulog_la_SOURCES = \
     src/ulog.c
 libulog_la_CFLAGS = -Wall -Wextra -pedantic
 libulog_la_CPPFLAGS = -I$(top_srcdir)/inc
-libulog_la_LDFLAGS = -version-info 2:0:0
+libulog_la_LDFLAGS = -version-info 2:1:0
 
 ulog_install_dir = $(includedir)/ulog
 ulog_install__HEADERS = \

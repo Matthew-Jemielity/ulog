@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.64])
-AC_INIT([ulog], [2.0], [matthew.jemielity@gmail.com])
+AC_INIT([ulog], [2.1], [matthew.jemielity@gmail.com])
 AC_CONFIG_SRCDIR([src/ulog.c])
 AC_CONFIG_FILES([Makefile])
 
