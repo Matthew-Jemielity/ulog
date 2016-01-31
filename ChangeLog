@@ -1,3 +1,33 @@
+commit 4f22a1e04a1496a4c6751758aa157bf2c4b7a2b1
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sun Jan 31 01:13:45 2016 +0100
+
+    version 2.1
+
+commit 084890c40b6596faa795981c6e3974fb704fb981
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sun Jan 31 01:11:58 2016 +0100
+
+    added new simple test, showing ulog calls from different functions
+
+commit ccb7d61ebf98bb74530c763b71f4f5348da35c69
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sun Jan 31 01:01:50 2016 +0100
+
+    small refactoring of mutex
+
+commit 01dd7ee17142584fa4419e57fa5c229bc8cd5829
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Thu Nov 12 22:54:54 2015 +0100
+
+    updated autotools files to be more robust
+
+commit 650e04654c8c1c501d3cc203f93c1666ba1c7d57
+Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
+Date:   Sun Sep 20 02:16:10 2015 +0200
+
+    Changelog updated
+
 commit 394d5b79b36b0f1f23b2f034194cff5b32243662
 Author: Mateusz Jemielity <matthew.jemielity@gmail.com>
 Date:   Sun Sep 20 02:15:43 2015 +0200
