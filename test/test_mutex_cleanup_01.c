@@ -19,7 +19,6 @@
 int main(void)
 {
     ulog_mutex mutex = ulog_mutex_get();
-    intptr_t const default_state = ( intptr_t ) mutex.op;
 
     assert( EINVAL == ulog_status_to_int( mutex.op->cleanup( NULL )));
     assert( EALREADY == ulog_status_to_int( mutex.op->cleanup( &mutex )));
@@ -27,9 +26,7 @@ int main(void)
     assert( ulog_status_success( mutex.op->setup( &mutex )));
 
     assert( ulog_status_success( mutex.op->cleanup( &mutex )));
-    assert( default_state == ( intptr_t ) mutex.op );
     assert( EALREADY == ulog_status_to_int( mutex.op->cleanup( &mutex )));
-    assert( default_state == ( intptr_t ) mutex.op );
 
     return 0;
 }

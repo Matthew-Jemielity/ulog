@@ -22,11 +22,9 @@ int main(void)
     assert( EINVAL == ulog_status_to_int( mutex.op->unlock( NULL )));
     assert( EINVAL == ulog_status_to_int( mutex.op->unlock( &mutex )));
     assert( ulog_status_success( mutex.op->setup( &mutex )));
-    intptr_t const setup_state = ( intptr_t ) mutex.op;
 
     assert( ulog_status_success( mutex.op->lock( &mutex )));
     assert( ulog_status_success( mutex.op->unlock( &mutex )));
-    assert( setup_state == ( intptr_t ) mutex.op );
 
     assert( ulog_status_success( mutex.op->cleanup( &mutex )));
     return 0;

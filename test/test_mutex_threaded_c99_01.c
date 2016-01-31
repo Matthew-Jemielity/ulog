@@ -17,7 +17,7 @@
 #include <stdint.h> /* intptr_t */
 
 static unsigned resource;
-static unsigned loops = 100000U;
+static unsigned loops = 1000000U;
 
 void * foo( void * arg )
 {

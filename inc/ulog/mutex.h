@@ -50,15 +50,16 @@ typedef struct ulog_mutex_op_table_struct ulog_mutex_op_table;
  * some test cases run in a single thread, with resultant
  * behaviour:
  * ulog_mutex m1 = ulog_mutex_get();
- * +------------------+-----------------+-----------------+
- * | separate objects |    undefined!   |   undefined!    |
- * +------------------+-----------------+-----------------+
- * |ulog_mutex m2=m1; |m.op->setup(&m1);|m.op->setup(&m1);|
- * |m1.op->setup(&m1);|m1.op->lock(&m1);|ulog_mutex m2=m1;|
- * |m2.op->setup(&m2);|ulog_mutex m2=m1;|m1.op->lock(&m1);|
- * |m1.op->lock(&m1); |m2.op->lock(&m2);|m2.op->lock(&m2);|
- * |m2.op->lock(&m2); |                 |                 |
- * +------------------+-----------------+-----------------+
+ * +------------------+----------------------+----------------------+
+ * |     separate     |     same objects     |     same objects     |
+ * |     objects      | undefined behaviour! | undefined behaviour! |
+ * +------------------+----------------------+----------------------+
+ * |ulog_mutex m2=m1; |m.op->setup(&m1);     |m.op->setup(&m1);     |
+ * |m1.op->setup(&m1);|m1.op->lock(&m1);     |ulog_mutex m2=m1;     |
+ * |m2.op->setup(&m2);|ulog_mutex m2=m1;     |m1.op->lock(&m1);     |
+ * |m1.op->lock(&m1); |m2.op->lock(&m2);     |m2.op->lock(&m2);     |
+ * |m2.op->lock(&m2); |                      |                      |
+ * +------------------+----------------------+----------------------+
  *
  * Usage of ulog_mutex object in multiple threads, example
  * using POSIX threads model:

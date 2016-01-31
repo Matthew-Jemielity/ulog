@@ -39,9 +39,8 @@ mutex_obj;
 struct ulog_mutex_state_struct
 {
     mutex_obj mutex;
+    ulog_mutex_op_table const * op;
 };
-
-static ulog_mutex_state guard;
 
 typedef
 #if __STDC_NO_THREADS__
@@ -142,8 +141,8 @@ static generic_operation_arg const generic_arg[ 4U ] =
 
 typedef enum
 {
-  INIT = 0U,
-  DESTROY = 1U,
+  SETUP = 0U,
+  CLEANUP = 1U,
   LOCK = 2U,
   UNLOCK = 3U
 }
@@ -162,14 +161,14 @@ generic_invalid( ulog_mutex const * const self )
 static inline ulog_status
 generic_uninitialized( ulog_mutex const * const self )
 {
-    if( !valid( self )) { return generic_invalid( self ); }
+    UNUSED( self );
     return ulog_status_descriptive( EINVAL, "mutex object uninitialized" );
 }
 
 static inline ulog_status
-generic_already( ulog_mutex * const self, char const * const message )
+generic_already( ulog_mutex const * const self, char const * const message )
 {
-    if( !valid( self )) { return generic_invalid( self ); }
+    UNUSED( self );
     return ulog_status_descriptive( EALREADY, message );
 }
 
@@ -191,7 +190,6 @@ generic_operation(
     generic_operation_arg const * const arg
 )
 {
-    if( !valid( self )) { return generic_invalid( self ); }
     switch( arg->op( &( self->state->mutex )))
     {
         case ULOG_MUTEX_SUCCESS:
@@ -201,44 +199,129 @@ generic_operation(
     }
 }
 
+static THREADUNSAFE ulog_status
+setup_safe( ulog_mutex * const self );
+static THREADUNSAFE ulog_status
+cleanup_safe( ulog_mutex * const self );
 static inline ulog_status
-lock( ulog_mutex const * const self )
+lock_safe( ulog_mutex const * const self );
+static inline ulog_status
+unlock_safe( ulog_mutex const * const self );
+
+static ulog_mutex_op_table const default_op =
+{
+    .setup = setup_safe,
+    .cleanup = cleanup_already,
+    .lock = generic_uninitialized,
+    .unlock = generic_uninitialized
+};
+static ulog_mutex_op_table const setup_op =
+{
+    .setup = setup_already,
+    .cleanup = cleanup_safe,
+    .lock = lock_safe,
+    .unlock = unlock_safe
+};
+/*
+ * it would be nice to have an additional "locked" state
+ * however this would at least require atomic op changes
+ * additionally trying to lock a locked mutex would fail
+ * instead of blocking the calling thread
+ */
+
+static ulog_mutex_state guard = { .op = &default_op };
+
+static THREADUNSAFE ulog_status
+setup_safe( ulog_mutex * const self )
+{
+    ulog_mutex_state * const state = malloc( sizeof( ulog_mutex_state ));
+    if( NULL == state )
+    {
+        return ulog_status_descriptive(
+            ENOMEM,
+            "cannot allocate memory for mutex state"
+        );
+    }
+    self->state = state;
+    self->state->op = &setup_op;
+
+    ulog_status const result =
+        generic_operation( self, &( generic_arg[ SETUP ] ));
+    if( !ulog_status_success( result ))
+    {
+        free( self->state );
+        self->state = &guard;
+    }
+    return result;
+}
+
+static THREADUNSAFE ulog_status
+cleanup_safe( ulog_mutex * const self )
+{
+    /*
+     * In case of pthreads (and possibly C11 threads, since they seem to use
+     * pthreads) the implementation should allow safe destruction of mutex
+     * right after it has been unlocked.
+     */
+    self->op->lock( self );
+    self->op->unlock( self );
+    ulog_status const result =
+        generic_operation( self, &( generic_arg[ CLEANUP ] ));
+    if( ulog_status_success( result ))
+    {
+        free( self->state );
+        self->state = &guard;
+    }
+    return result;
+}
+
+static inline ulog_status
+lock_safe( ulog_mutex const * const self )
 {
     return generic_operation( self, &( generic_arg[ LOCK ] ));
 }
 
 static inline ulog_status
-unlock( ulog_mutex const * const self )
+unlock_safe( ulog_mutex const * const self )
 {
     return generic_operation( self, &( generic_arg[ UNLOCK ] ));
 }
 
-static THREADUNSAFE ulog_status
-setup( ulog_mutex * const self );
-static THREADUNSAFE ulog_status
-cleanup( ulog_mutex * const self );
+static inline THREADUNSAFE ulog_status
+setup( ulog_mutex * const self )
+{
+    if( !valid( self )) { return generic_invalid( self ); }
+    return self->state->op->setup( self );
+}
 
-static ulog_mutex_op_table const default_state =
+static inline THREADUNSAFE ulog_status
+cleanup( ulog_mutex * const self )
+{
+    if( !valid( self )) { return generic_invalid( self ); }
+    return self->state->op->cleanup( self );
+}
+
+static inline ulog_status
+lock( ulog_mutex const * const self )
+{
+    if( !valid( self )) { return generic_invalid( self ); }
+    return self->state->op->lock( self );
+}
+
+static inline ulog_status
+unlock( ulog_mutex const * const self )
+{
+    if( !valid( self )) { return generic_invalid( self ); }
+    return self->state->op->unlock( self );
+}
+
+static ulog_mutex_op_table const op =
 {
     .setup = setup,
-    .cleanup = cleanup_already,
-    .lock = generic_uninitialized,
-    .unlock = generic_uninitialized
-};
-static ulog_mutex_op_table const setup_state =
-{
-    .setup = setup_already,
     .cleanup = cleanup,
     .lock = lock,
     .unlock = unlock
 };
-/*
- * The state machine could be made safer with additional locked state.
- * However this would require that ulog_mutex object was shallow - copied
- * into every thread that wanted to use it. This meant it couldn't be held
- * in opaque pointers and would change how object containing it was used.
- * After long deliberation ease of use was chosen over safety.
- */
 
 static inline bool
 valid( ulog_mutex const * const self )
@@ -249,68 +332,21 @@ valid( ulog_mutex const * const self )
             && (
                 (
                     ( &guard == self->state )
-                    && ( &default_state == self->op )
+                    && ( &default_op == self->state->op )
                 )
                 || (
                     ( NULL != self->state )
                     && ( &guard != self->state )
-                    && ( &setup_state == self->op )
+                    && ( &setup_op == self->state->op )
                 )
             )
+            && ( &op == self->op )
         );
-}
-
-static THREADUNSAFE ulog_status
-setup( ulog_mutex * const self )
-{
-    if( !valid( self )) { return generic_invalid( self ); }
-    ulog_mutex_state * const state = malloc( sizeof( ulog_mutex_state ));
-    if( NULL == state )
-    {
-        return ulog_status_descriptive(
-            ENOMEM,
-            "cannot allocate memory for mutex state"
-        );
-    }
-    self->state = state;
-    self->op = &setup_state;
-
-    ulog_status const result =
-        generic_operation( self, &( generic_arg[ INIT ] ));
-    if( !ulog_status_success( result ))
-    {
-        free( self->state );
-        self->state = &guard;
-        self->op = &default_state;
-    }
-    return result;
-}
-
-static THREADUNSAFE ulog_status
-cleanup( ulog_mutex * const self )
-{
-    if( !valid( self )) { return generic_invalid( self ); }
-    /*
-     * In case of pthreads (and possibly C11 threads, since they seem to use
-     * pthreads) the implementation should allow safe destruction of mutex
-     * right after it has been unlocked.
-     */
-    self->op->lock( self );
-    self->op->unlock( self );
-    ulog_status const result =
-        generic_operation( self, &( generic_arg[ DESTROY ] ));
-    if( ulog_status_success( result ))
-    {
-        free( self->state );
-        self->state = &guard;
-        self->op = &default_state;
-    }
-    return result;
 }
 
 ulog_mutex
 ulog_mutex_get( void )
 {
-    return ( ulog_mutex ) { .state = &guard, .op = &default_state };
+    return ( ulog_mutex ) { .state = &guard, .op = &op };
 }
 

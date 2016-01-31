@@ -19,7 +19,7 @@ int main(void)
     ulog_mutex mutex = ulog_mutex_get();
     assert( ulog_status_success( mutex.op->setup( &mutex )));
 
-    for( int i = 0; i < 100000; ++i )
+    for( int i = 0; i < 1000000; ++i )
     {
       assert( ulog_status_success( mutex.op->lock( &mutex )));
       assert( ulog_status_success( mutex.op->unlock( &mutex )));

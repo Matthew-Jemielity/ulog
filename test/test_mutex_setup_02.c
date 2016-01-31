@@ -17,13 +17,10 @@
 int main(void)
 {
     ulog_mutex mutex = ulog_mutex_get();
-    intptr_t const default_state = ( intptr_t ) mutex.op;
 
-    for( int i = 0; i < 100000; ++i )
+    for( int i = 0; i < 1000000; ++i )
     {
       assert( ulog_status_success( mutex.op->setup( &mutex )));
-      assert( default_state != ( intptr_t ) mutex.op );
-
       assert( ulog_status_success( mutex.op->cleanup( &mutex )));
     }
 
