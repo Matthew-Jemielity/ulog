@@ -41,6 +41,7 @@ ULOG_UNIT_TESTS = \
     test/test_null_01 \
     test/test_simple_01 \
     test/test_simple_02 \
+    test/test_simple_03 \
     test/test_ulog_obj_cleanup_01 \
     test/test_ulog_obj_get_01 \
     test/test_ulog_obj_setup_01 \
@@ -156,6 +157,11 @@ test_test_simple_02_SOURCES = test/test_simple_02.c
 test_test_simple_02_CFLAGS = ${TESTS_C_FLAGS}
 test_test_simple_02_CPPFLAGS = ${TESTS_CPP_FLAGS}
 test_test_simple_02_LDADD = ${TESTS_LD_ADD}
+
+test_test_simple_03_SOURCES = test/test_simple_03.c
+test_test_simple_03_CFLAGS = ${TESTS_C_FLAGS}
+test_test_simple_03_CPPFLAGS = ${TESTS_CPP_FLAGS}
+test_test_simple_03_LDADD = ${TESTS_LD_ADD}
 
 test_test_ulog_obj_cleanup_01_SOURCES = test/test_ulog_obj_cleanup_01.c
 test_test_ulog_obj_cleanup_01_CFLAGS = ${TESTS_C_FLAGS}
