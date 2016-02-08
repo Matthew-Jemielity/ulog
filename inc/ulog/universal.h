@@ -18,14 +18,18 @@
  * to be used directly and that there are legitimate wrappers that should be
  * used instead.
  */
-# define INDIRECT
+# ifndef INDIRECT
+#  define INDIRECT
+# endif /* INDIRECT */
 /**
  * \brief Specifies that a method is not thread-safe.
  *
  * Currently a no-op. Signifies that method wasn't designed to be thread-safe
  * (for example it uses static variables).
  */
-# define THREADUNSAFE
+# ifndef THREADUNSAFE
+#  define THREADUNSAFE
+# endif /* THREADUNSAFE */
 /**
  * \brief Specifies that variable is not used in a compiler-friendly way.
  *
@@ -34,7 +38,9 @@
  * a single keyworkd to grep for and even allows for additional functionality,
  * like logging, if the macro is expanded.
  */
-# define UNUSED( VAR ) (( void ) ( VAR ))
+# ifndef UNUSED
+#  define UNUSED( VAR ) (( void ) ( VAR ))
+# endif /* UNUSED */
 
 #endif /* IONIZE_UNIVERSAL_H__ */
 
