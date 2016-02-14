@@ -11,6 +11,10 @@
 #ifndef ULOG_UNIVERSAL_H__
 # define ULOG_UNIVERSAL_H__
 
+# ifdef __cplusplus
+extern "C" {
+# endif /* __cplusplus */
+
 /**
  * \brief Specifies that a method shouldn't be used directly.
  *
@@ -41,6 +45,10 @@
 # ifndef UNUSED
 #  define UNUSED( VAR ) (( void ) ( VAR ))
 # endif /* UNUSED */
+
+# ifdef __cplusplus
+}
+# endif /* __cplusplus */
 
 #endif /* IONIZE_UNIVERSAL_H__ */
 

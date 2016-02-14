@@ -16,6 +16,10 @@
 # include <stddef.h> /* offsetof */
 # include <stdint.h> /* uint8_t */
 
+# ifdef __cplusplus
+extern "C" {
+# endif /* __cplusplus */
+
 /**
  * \brief Gets container of listable element.
  * \param LISTABLE Pointer to listable element.
@@ -206,6 +210,10 @@ ulog_list_ctrl_get( void );
  */
 void
 ulog_listable_compile_time_check( ulog_listable const element );
+
+# ifdef __cplusplus
+}
+# endif /* __cplusplus */
 
 #endif /* ULOG_LISTABLE_H__ */
 

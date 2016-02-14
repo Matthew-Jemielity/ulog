@@ -15,6 +15,10 @@
 # include <ulog/status.h> /* ulog_status */
 # include <ulog/universal.h> /* THREADUNSAFE */
 
+# ifdef __cplusplus
+extern "C" {
+# endif /* __cplusplus */
+
 /**
  * \brief Forward declaration of opaque ulog_mutex state.
  * \see struct ulog_mutex_state_struct
@@ -169,6 +173,10 @@ struct ulog_mutex_op_table_struct
  */
 ulog_mutex
 ulog_mutex_get( void );
+
+# ifdef __cplusplus
+}
+# endif /* __cplusplus */
 
 #endif /* ULOG_MUTEX_H__ */
 

@@ -13,6 +13,10 @@
 
 # include <stdbool.h> /* bool */
 
+# ifdef __cplusplus
+extern "C" {
+# endif /* __cplusplus */
+
 /**
  * \brief Definition of ulog_status type.
  *
@@ -69,6 +73,10 @@ ulog_status_to_int( ulog_status const status );
  */
 bool
 ulog_status_success( ulog_status const status );
+
+# ifdef __cplusplus
+}
+# endif /* __cplusplus */
 
 #endif /* ULOG_STATUS_H__ */
 

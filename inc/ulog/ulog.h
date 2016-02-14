@@ -19,6 +19,10 @@
 # include <ulog/status.h> /* ulog_status */
 # include <ulog/universal.h> /* INDIRECT, THREADUNSAFE */
 
+# ifdef __cplusplus
+extern "C" {
+# endif /* __cplusplus */
+
 /**
  * \brief Defines type of log level.
  */
@@ -275,6 +279,10 @@ struct ulog_obj_op_table_struct
  */
 ulog_obj const *
 ulog_obj_get( void );
+
+# ifdef __cplusplus
+}
+# endif /* __cplusplus */
 
 #endif /* ULOG_H__ */
 
