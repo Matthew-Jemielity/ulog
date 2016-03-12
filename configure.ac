@@ -6,7 +6,7 @@ AC_INIT([ulog], [2.1], [matthew.jemielity@gmail.com])
 AC_CONFIG_SRCDIR([src/ulog.c])
 AC_CONFIG_FILES([Makefile])
 
-AM_INIT_AUTOMAKE([-Wall])
+AM_INIT_AUTOMAKE([-Wall subdir-objects])
 
 # Checks for programs.
 AM_PROG_AR
