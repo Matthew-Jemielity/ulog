@@ -1,3 +1,5 @@
+VPATH = $(top_srcdir)
+
 lib_LTLIBRARIES = libulog.la
 libulog_la_SOURCES = \
     inc/ulog/listable.h \
